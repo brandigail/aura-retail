@@ -7,6 +7,7 @@ import {
   clearCart,
   getCartServerSnapshot,
   getCartSnapshot,
+  reconcileItems,
   removeItem,
   setItemQty,
   subscribeCart,
@@ -22,6 +23,7 @@ interface CartContextValue {
   addItem: typeof addItem;
   setItemQty: typeof setItemQty;
   removeItem: typeof removeItem;
+  reconcileItems: typeof reconcileItems;
   clearCart: typeof clearCart;
 }
 
@@ -46,6 +48,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       addItem,
       setItemQty,
       removeItem,
+      reconcileItems,
       clearCart,
     }),
     [items, ready],

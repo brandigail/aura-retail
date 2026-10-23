@@ -102,6 +102,27 @@ export function setItemQty(productId: number, qty: number): void {
   );
 }
 
+export interface CartCorrection {
+  productId: number;
+  /** Current price in cents. */
+  unitPrice: number;
+  /** Current stock; 0 removes the line. */
+  stock: number;
+}
+
+/** Applies server-side truth (price/stock) to cart lines, clamping quantities and dropping unavailable ones. */
+export function reconcileItems(corrections: readonly CartCorrection[]): void {
+  const byId = new Map(corrections.map((c) => [c.productId, c]));
+  write(
+    getCartSnapshot().flatMap((item) => {
+      const fix = byId.get(item.productId);
+      if (!fix) return [item];
+      const qty = clamp(item.qty, fix.stock);
+      return qty > 0 ? [{ ...item, unitPrice: fix.unitPrice, stock: fix.stock, qty }] : [];
+    }),
+  );
+}
+
 export function removeItem(productId: number): void {
   write(getCartSnapshot().filter((i) => i.productId !== productId));
 }

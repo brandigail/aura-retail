@@ -7,6 +7,7 @@ import {
   serial,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
@@ -53,7 +54,11 @@ export const reviews = pgTable(
 
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
+  /** Unguessable handle for the public confirmation page, so order ids can't be enumerated. */
+  token: uuid("token").notNull().unique().defaultRandom(),
+  name: text("name").notNull(),
   email: text("email").notNull(),
+  address: text("address").notNull(),
   /** Integer cents. */
   total: integer("total").notNull(),
   status: text("status", { enum: ["pending", "paid", "shipped", "cancelled"] })

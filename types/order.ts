@@ -10,7 +10,12 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
+  /** Unguessable handle used in the public confirmation URL. */
+  token: string;
+  name: string;
   email: string;
+  /** Multi-line delivery address. */
+  address: string;
   items: OrderItem[];
   /** Integer cents. */
   total: number;

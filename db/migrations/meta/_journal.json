@@ -8,6 +8,13 @@
       "when": 1792755434845,
       "tag": "0000_polite_natasha_romanoff",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792759419944,
+      "tag": "0001_simple_whizzer",
+      "breakpoints": true
     }
   ]
 }

@@ -19,7 +19,7 @@ Order lookup by email, wishlist, discount codes, CSV export of orders.
 ## Data model (put in `types/`)
 - `Product { id, slug, name, category, price, stock, description, specs: Record<string,string>, images: string[] }`
 - `Review { id, productId, author, rating (1-5), title, body, createdAt }`
-- `Order { id, email, items: OrderItem[], total, status, createdAt }`
+- `Order { id, token, name, email, address, items: OrderItem[], total, status, createdAt }` (`token` is the unguessable handle in the `/orders/[token]` confirmation URL)
 - `OrderItem { productId, name, unitPrice, qty }`
 
 ## Rules specific to this project
