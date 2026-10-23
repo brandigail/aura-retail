@@ -21,7 +21,18 @@ async function main(): Promise<void> {
 
   const inserted = await db
     .insert(products)
-    .values(seedProducts.map((p) => ({ ...p, images: [] })))
+    .values(
+      seedProducts.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        category: p.category,
+        price: p.price,
+        stock: p.stock,
+        description: p.description,
+        specs: p.specs,
+        images: [`/products/${p.slug}/1.svg`, `/products/${p.slug}/2.svg`],
+      })),
+    )
     .returning({ id: products.id, slug: products.slug });
   const idBySlug = new Map(inserted.map((p) => [p.slug, p.id]));
 

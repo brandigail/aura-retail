@@ -38,6 +38,25 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Tailwind's reset gives buttons the default arrow cursor; clickable controls should show the hand. */
+@layer base {
+  button:not(:disabled, [aria-disabled="true"]),
+  [role="button"],
+  select,
+  summary,
+  label:has(> input[type="radio"]),
+  label:has(> input[type="checkbox"]),
+  input[type="radio"],
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}
+
 /* Lock page scroll behind an open modal dialog (e.g. the cart drawer). */
 body:has(dialog[open]) {
   overflow: hidden;

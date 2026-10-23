@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Plus } from "lucide-react";
+import { AdminSkeleton } from "@/features/admin/admin-skeleton";
 import { ProductsTable } from "@/features/admin/products/products-table";
-import { listAdminProducts } from "@/lib/admin-product-queries";
 import { requireAdmin } from "@/lib/admin-auth";
+import { listAdminProducts } from "@/lib/admin-product-queries";
 
-export default async function AdminProductsPage() {
+async function ProductsList() {
   await requireAdmin();
   const rows = await listAdminProducts();
 
@@ -22,5 +24,13 @@ export default async function AdminProductsPage() {
       </div>
       <ProductsTable rows={rows} />
     </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={<AdminSkeleton />}>
+      <ProductsList />
+    </Suspense>
   );
 }

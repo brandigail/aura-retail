@@ -3,7 +3,7 @@
 Read the portfolio-root `CLAUDE.md` first for global rules. This file is the brief for this project.
 
 ## What it is
-A hardware-focused online store with product pages, reviews, a cart, and an admin dashboard for catalog, stock and order analytics. Teal accent (#008080), dark/light theme. The old version is broken; don't reuse its code.
+A general, multi-category online store (kitchen, toys and games, knitting and crafts, swimming, sports and outdoors, home, garden and DIY, pets, stationery, electronics) with product pages, reviews, a cart, and an admin dashboard for catalog, stock and order analytics. Teal accent (#008080), dark/light theme. The old version is broken; don't reuse its code.
 
 ## Stack
 Next.js (App Router), TypeScript strict, Tailwind CSS, lucide-react, React Context (cart, theme), Neon Postgres via Drizzle ORM, hosted on Netlify. No Vercel, no Supabase.
@@ -23,9 +23,9 @@ Order lookup by email, wishlist, discount codes, CSV export of orders.
 - `OrderItem { productId, name, unitPrice, qty }`
 
 ## Rules specific to this project
-- All product images live locally under `/public/products/<slug>/` (webp). Never hotlink; never substitute random stock images for specific hardware. Missing images go in `TODO-ASSETS.md` with a local placeholder.
+- All product images live locally under `/public/products/<slug>/`. Never hotlink and never use random stock photos. The seeded products use generated SVG illustrations (`npm run images`, drawn in `scripts/illustrations/`); real photos (webp) can replace them later. See `TODO-ASSETS.md`.
 - `ThemeProvider` and `CartProvider` are mounted once in a client `Providers` component in `app/layout.tsx`. No localStorage reads during render. Zero hydration warnings, and no theme flash (inline theme init script).
-- `npm run seed` inserts 12 to 20 products with specs and a few reviews each.
+- `npm run seed` inserts about 60 products across 10 categories, with specs, images and a few reviews each.
 - Money is stored as integer cents; format in one helper.
 
 ## Start here

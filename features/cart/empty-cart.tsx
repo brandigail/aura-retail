@@ -6,7 +6,7 @@ export function EmptyCart({ onNavigate }: { onNavigate?: () => void }) {
     <div className="flex flex-col items-center gap-3 px-4 py-12 text-center">
       <ShoppingCart aria-hidden className="size-10 text-muted" />
       <p className="text-lg font-semibold">Your cart is empty</p>
-      <p className="text-muted">Add some hardware and it will show up here.</p>
+      <p className="text-muted">Add something you like and it will show up here.</p>
       <Link
         href="/"
         onClick={onNavigate}

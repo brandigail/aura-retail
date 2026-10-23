@@ -26,8 +26,8 @@ export async function Catalog({ searchParams }: CatalogProps) {
       </p>
       {items.length > 0 ? (
         <ul className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {items.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {items.map((product, index) => (
+            <ProductCard key={product.id} product={product} priority={index < 4} />
           ))}
         </ul>
       ) : (

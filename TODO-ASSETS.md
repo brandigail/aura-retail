@@ -1,24 +1,17 @@
 ﻿# TODO-ASSETS
 
-Product images are not supplied yet. Seeded products have an empty images array and the UI falls back to `/products/placeholder.svg`.
+## Product images
 
-Add webp files (about 1200x900) at these paths, then set each product's images in the admin (step 12) or in the seed data:
+Every seeded product currently has two **generated illustrations** (not photographs):
 
-- [ ] `public/products/helix-h5-6-core-processor/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/helix-h7-8-core-processor/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/helix-h9-16-core-processor/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/nova-gt-8gb-graphics-card/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/nova-gt-pro-12gb-graphics-card/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/nova-gt-ultra-16gb-graphics-card/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/ember-ddr5-32gb-6000-memory/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/ember-ddr5-64gb-6400-memory/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/stratus-nvme-1tb-gen4-ssd/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/stratus-nvme-2tb-gen4-ssd/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/stratus-sata-1tb-ssd/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/atlas-b650-atx-wifi-motherboard/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/atlas-b650-mini-itx-motherboard/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/glacier-240-aio-liquid-cooler/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/glacier-air-tower-cpu-cooler/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/forge-750w-gold-power-supply/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/keystone-75-mechanical-keyboard/1.webp` (main), `2.webp` (angle/detail)
-- [ ] `public/products/pointer-pro-wireless-mouse/1.webp` (main), `2.webp` (angle/detail)
+- `public/products/<slug>/1.svg`: the product on a tinted background
+- `public/products/<slug>/2.svg`: a detail card with its name and key specs
+
+They are drawn in code (`scripts/illustrations/`) from each product's name, description and specs, and are rebuilt with `npm run images`. They are good for demoing the store, but a recruiter-ready site would use real product photos.
+
+To replace one with a real photo:
+
+1. Add the file (webp, about 1200x900) under `public/products/<slug>/`, e.g. `1.webp`.
+2. In the admin, edit the product and change its image paths (one per line) to point at the new file.
+
+`public/products/placeholder.svg` is the fallback for any product with no images.

@@ -1,10 +1,12 @@
 import { count, lte } from "drizzle-orm";
+import { Suspense } from "react";
 import { db } from "@/db";
 import { orders, products } from "@/db/schema";
+import { AdminSkeleton } from "@/features/admin/admin-skeleton";
 import { requireAdmin } from "@/lib/admin-auth";
 import { LOW_STOCK_THRESHOLD } from "@/lib/product-display";
 
-export default async function AdminDashboardPage() {
+async function Dashboard() {
   await requireAdmin();
 
   const [[productCount], [orderCount], [lowStockCount]] = await Promise.all([
@@ -31,5 +33,13 @@ export default async function AdminDashboardPage() {
         ))}
       </dl>
     </div>
+  );
+}
+
+export default function AdminDashboardPage() {
+  return (
+    <Suspense fallback={<AdminSkeleton />}>
+      <Dashboard />
+    </Suspense>
   );
 }

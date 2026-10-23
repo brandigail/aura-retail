@@ -10,7 +10,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "seed": "tsx db/seed.ts"
+    "seed": "tsx db/seed.ts",
+    "images": "tsx scripts/generate-product-images.ts"
   },
   "dependencies": {
     "@neon/config": "^1.9.3",

@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { AdminSkeleton } from "@/features/admin/admin-skeleton";
 import { updateProduct } from "@/features/admin/products/product-actions";
 import { ProductForm } from "@/features/admin/products/product-form";
-import { getAdminProduct, getAllCategories } from "@/lib/admin-product-queries";
 import { requireAdmin } from "@/lib/admin-auth";
+import { getAdminProduct, getAllCategories } from "@/lib/admin-product-queries";
 import { parseProductId } from "@/lib/product-id";
 
-export default async function EditProductPage({ params }: PageProps<"/admin/products/[id]/edit">) {
+async function EditProduct({ params }: { params: Promise<{ id: string }> }) {
   await requireAdmin();
 
   const id = parseProductId((await params).id);
@@ -34,5 +36,13 @@ export default async function EditProductPage({ params }: PageProps<"/admin/prod
         submitLabel="Save changes"
       />
     </div>
+  );
+}
+
+export default function EditProductPage({ params }: PageProps<"/admin/products/[id]/edit">) {
+  return (
+    <Suspense fallback={<AdminSkeleton />}>
+      <EditProduct params={params} />
+    </Suspense>
   );
 }

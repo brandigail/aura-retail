@@ -11,7 +11,7 @@ const STOCK_STYLES: Record<StockStatus, string> = {
   "out-of-stock": "border-red-600 text-red-700 dark:border-red-400 dark:text-red-300",
 };
 
-export function ProductCard({ product }: { product: ProductSummary }) {
+export function ProductCard({ product, priority = false }: { product: ProductSummary; priority?: boolean }) {
   const status = getStockStatus(product.stock);
   const [image] = getProductImages(product);
 
@@ -26,6 +26,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
             src={image}
             alt={product.name}
             fill
+            priority={priority}
             sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
             className={`object-cover ${status === "out-of-stock" ? "opacity-60" : ""}`}
           />

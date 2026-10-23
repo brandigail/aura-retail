@@ -2,6 +2,7 @@ import {
   check,
   index,
   integer,
+  json,
   jsonb,
   pgTable,
   serial,
@@ -23,7 +24,8 @@ export const products = pgTable(
     price: integer("price").notNull(),
     stock: integer("stock").notNull().default(0),
     description: text("description").notNull().default(""),
-    specs: jsonb("specs").$type<Record<string, string>>().notNull().default({}),
+    // json, not jsonb: jsonb reorders keys, and specs are shown in the order they were written.
+    specs: json("specs").$type<Record<string, string>>().notNull().default({}),
     images: jsonb("images").$type<string[]>().notNull().default([]),
     /** Set when the admin starts deleting a product that has open orders. Hides it and blocks new orders. */
     deletionRequestedAt: timestamp("deletion_requested_at", { withTimezone: true }),

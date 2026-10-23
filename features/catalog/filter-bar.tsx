@@ -62,7 +62,7 @@ export function FilterBar({ filters, categories }: FilterBarProps) {
             type="search"
             defaultValue={filters.q}
             maxLength={80}
-            placeholder="Search processors, GPUs, SSDs…"
+            placeholder="Search cookware, toys, yarn, swim gear…"
             onChange={(event) => onSearchChange(event.target.value)}
             className="h-11 w-full rounded-md border border-border bg-background pl-10 pr-3 text-base placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           />
