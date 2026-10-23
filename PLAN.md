@@ -1,6 +1,6 @@
-# Aura Retail: Build Plan
+﻿# Aura Retail: Build Plan
 
-- [ ] 1. Scaffold Next.js (App Router, TS strict, Tailwind), add lucide-react, Drizzle, `.env.example`, `.gitignore`
+- [x] 1. Scaffold Next.js (App Router, TS strict, Tailwind), add lucide-react, Drizzle, `.env.example`, `.gitignore`
 - [ ] 2. Create the Neon database and set `DATABASE_URL` locally; define Drizzle schema and run the first migration
 - [ ] 3. Define `types/` interfaces (Product, Review, Order, OrderItem) and a money helper
 - [ ] 4. Build `Providers` (Theme + Cart) in `app/layout.tsx`; teal design tokens, dark/light toggle with no flash or hydration warnings
