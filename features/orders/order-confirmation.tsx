@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import { formatMoney } from "@/lib/money";
-import { getOrderByToken } from "@/lib/order-queries";
+import { getNoticesForOrder, getOrderByToken } from "@/lib/order-queries";
+import { OrderNotices } from "./order-notices";
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short", timeZone: "UTC" });
 
@@ -11,6 +12,7 @@ export async function OrderConfirmation({ params }: { params: Promise<{ token: s
   const { token } = await params;
   const order = await getOrderByToken(token);
   if (!order) notFound();
+  const notices = await getNoticesForOrder(order.id);
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
@@ -22,6 +24,8 @@ export async function OrderConfirmation({ params }: { params: Promise<{ token: s
         </p>
         <p className="text-sm text-muted">Demo store: no payment was taken and no email was sent.</p>
       </div>
+
+      <OrderNotices token={order.token} orderId={order.id} notices={notices} />
 
       <section aria-labelledby="items-heading" className="rounded-lg border border-border p-5">
         <h2 id="items-heading" className="mb-3 text-xl font-semibold">

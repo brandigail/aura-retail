@@ -15,6 +15,13 @@
       "when": 1792759419944,
       "tag": "0001_simple_whizzer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792765154018,
+      "tag": "0002_many_santa_claus",
+      "breakpoints": true
     }
   ]
 }

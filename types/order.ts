@@ -23,3 +23,13 @@ export interface Order {
   /** ISO 8601 string. */
   createdAt: string;
 }
+
+/** A message to the customer about an open order. */
+export interface OrderNotice {
+  id: number;
+  kind: "product_removed";
+  /** Name as it was when the notice was created; the product itself may be gone by now. */
+  productName: string;
+  /** ISO 8601 string, or null while the customer has not accepted it. */
+  acknowledgedAt: string | null;
+}

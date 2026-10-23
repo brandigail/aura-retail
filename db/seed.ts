@@ -1,4 +1,4 @@
-import { config } from "dotenv";
+﻿import { config } from "dotenv";
 import { sql } from "drizzle-orm";
 import { buildSeedReviews } from "./seed-data/reviews";
 import { seedProducts } from "./seed-data/products";
@@ -17,7 +17,7 @@ async function main(): Promise<void> {
     );
   }
 
-  await db.execute(sql`truncate table order_items, orders, reviews, products restart identity cascade`);
+  await db.execute(sql`truncate table order_notices, order_items, orders, reviews, products restart identity cascade`);
 
   const inserted = await db
     .insert(products)

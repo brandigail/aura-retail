@@ -17,6 +17,9 @@ async function AdminGate({ children }: { children: ReactNode }) {
           <Link href="/admin" className="text-accent hover:underline">
             Dashboard
           </Link>
+          <Link href="/admin/products" className="text-muted hover:text-foreground hover:underline">
+            Products
+          </Link>
           <Link href="/" className="text-muted hover:text-foreground hover:underline">
             View store
           </Link>

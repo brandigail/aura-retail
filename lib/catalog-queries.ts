@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, getTableColumns, ilike, or, sql, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, getTableColumns, ilike, isNull, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import { products, reviews } from "@/db/schema";
 import type { CatalogFilters } from "@/features/catalog/catalog-params";
@@ -10,7 +10,11 @@ function escapeLike(input: string): string {
 }
 
 export async function getCategories(): Promise<string[]> {
-  const rows = await db.selectDistinct({ category: products.category }).from(products).orderBy(asc(products.category));
+  const rows = await db
+    .selectDistinct({ category: products.category })
+    .from(products)
+    .where(isNull(products.deletionRequestedAt))
+    .orderBy(asc(products.category));
   return rows.map((row) => row.category);
 }
 
@@ -25,7 +29,8 @@ export async function getProductSummaries(filters: CatalogFilters): Promise<Prod
     .groupBy(reviews.productId)
     .as("ratings");
 
-  const conditions: SQL[] = [];
+  // Products being withdrawn are hidden from the store.
+  const conditions: SQL[] = [isNull(products.deletionRequestedAt)];
   if (filters.category) conditions.push(eq(products.category, filters.category));
   if (filters.q) {
     const pattern = `%${escapeLike(filters.q)}%`;

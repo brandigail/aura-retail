@@ -7,6 +7,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
@@ -24,6 +25,8 @@ export const products = pgTable(
     description: text("description").notNull().default(""),
     specs: jsonb("specs").$type<Record<string, string>>().notNull().default({}),
     images: jsonb("images").$type<string[]>().notNull().default([]),
+    /** Set when the admin starts deleting a product that has open orders. Hides it and blocks new orders. */
+    deletionRequestedAt: timestamp("deletion_requested_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
@@ -84,5 +87,26 @@ export const orderItems = pgTable(
   (t) => [
     index("order_items_order_idx").on(t.orderId),
     check("order_items_qty_positive", sql`${t.qty} > 0`),
+  ],
+);
+
+/** A message to a customer about an open order, e.g. that a product in it is being removed. */
+export const orderNotices = pgTable(
+  "order_notices",
+  {
+    id: serial("id").primaryKey(),
+    orderId: integer("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    /** Plain id (no FK): the notice must outlive the product it is about. */
+    productId: integer("product_id").notNull(),
+    productName: text("product_name").notNull(),
+    kind: text("kind", { enum: ["product_removed"] }).notNull().default("product_removed"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    acknowledgedAt: timestamp("acknowledged_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("order_notices_order_idx").on(t.orderId),
+    unique("order_notices_order_product_kind").on(t.orderId, t.productId, t.kind),
   ],
 );

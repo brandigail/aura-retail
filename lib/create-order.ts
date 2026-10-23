@@ -25,7 +25,13 @@ async function priceLines(
   lines: CheckoutLine[],
 ): Promise<{ priced: PricedLine[]; conflicts: CheckoutConflict[] }> {
   const rows = await db
-    .select({ id: products.id, name: products.name, price: products.price, stock: products.stock })
+    .select({
+      id: products.id,
+      name: products.name,
+      price: products.price,
+      stock: products.stock,
+      withdrawn: products.deletionRequestedAt,
+    })
     .from(products)
     .where(inArray(products.id, lines.map((l) => l.productId)));
   const byId = new Map(rows.map((r) => [r.id, r]));
@@ -46,7 +52,9 @@ async function priceLines(
       continue;
     }
     const base = { productId: product.id, name: product.name, unitPrice: product.price, stock: product.stock, requested: line.qty };
-    if (product.stock < line.qty) conflicts.push({ ...base, reason: product.stock === 0 ? "unavailable" : "stock" });
+    // A product being withdrawn can't be bought, otherwise its deletion would never finish.
+    if (product.withdrawn) conflicts.push({ ...base, stock: 0, reason: "unavailable" });
+    else if (product.stock < line.qty) conflicts.push({ ...base, reason: product.stock === 0 ? "unavailable" : "stock" });
     else if (product.price !== line.unitPrice) conflicts.push({ ...base, reason: "price" });
     else priced.push({ productId: product.id, name: product.name, unitPrice: product.price, qty: line.qty });
   }

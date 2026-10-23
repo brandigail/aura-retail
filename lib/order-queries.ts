@@ -1,7 +1,7 @@
 import { asc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { orderItems, orders } from "@/db/schema";
-import type { Order } from "@/types/order";
+import { orderItems, orderNotices, orders } from "@/db/schema";
+import type { Order, OrderNotice } from "@/types/order";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -27,4 +27,18 @@ export async function getOrderByToken(token: string): Promise<Order | null> {
     .orderBy(asc(orderItems.id));
 
   return { ...order, items, createdAt: order.createdAt.toISOString() };
+}
+
+export async function getNoticesForOrder(orderId: number): Promise<OrderNotice[]> {
+  const rows = await db
+    .select({
+      id: orderNotices.id,
+      kind: orderNotices.kind,
+      productName: orderNotices.productName,
+      acknowledgedAt: orderNotices.acknowledgedAt,
+    })
+    .from(orderNotices)
+    .where(eq(orderNotices.orderId, orderId))
+    .orderBy(asc(orderNotices.id));
+  return rows.map((row) => ({ ...row, acknowledgedAt: row.acknowledgedAt?.toISOString() ?? null }));
 }
