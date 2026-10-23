@@ -38,6 +38,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Lock page scroll behind an open modal dialog (e.g. the cart drawer). */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

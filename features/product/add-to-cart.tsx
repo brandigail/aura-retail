@@ -1,7 +1,8 @@
 "use client";
 
-import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { QuantityStepper } from "@/components/quantity-stepper";
 import { useCart } from "@/features/cart/cart-provider";
 import { getProductImages } from "@/lib/product-display";
 import type { Product } from "@/types/product";
@@ -40,35 +41,10 @@ export function AddToCart({ product }: { product: Product }) {
     setQty(1);
   }
 
-  const stepper =
-    "inline-flex size-12 items-center justify-center disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent";
-
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-3">
-        <div role="group" aria-label="Quantity" className="inline-flex items-center rounded-md border border-border">
-          <button
-            type="button"
-            aria-label="Decrease quantity"
-            disabled={quantity <= 1}
-            onClick={() => setQty(quantity - 1)}
-            className={stepper}
-          >
-            <Minus aria-hidden className="size-4" />
-          </button>
-          <span aria-live="polite" className="w-10 text-center font-semibold">
-            {quantity}
-          </span>
-          <button
-            type="button"
-            aria-label="Increase quantity"
-            disabled={quantity >= remaining}
-            onClick={() => setQty(quantity + 1)}
-            className={stepper}
-          >
-            <Plus aria-hidden className="size-4" />
-          </button>
-        </div>
+        <QuantityStepper value={quantity} max={remaining} onChange={setQty} />
         <button
           type="button"
           disabled={remaining === 0}

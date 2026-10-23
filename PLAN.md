@@ -8,7 +8,7 @@
 - [x] 6. Catalog page: grid, category filter, search, sort
 - [x] 7. Product page `/products/[id]`: gallery, specs, stock badge, rating breakdown, reviews list
 - [x] 8. Review submission (server action or route handler) with validation
-- [ ] 9. Cart drawer and cart page (quantities, totals, stock limits)
+- [x] 9. Cart drawer and cart page (quantities, totals, stock limits)
 - [ ] 10. Mock checkout: create order, decrement stock in one transaction
 - [ ] 11. Admin login (`ADMIN_PASSWORD`, signed httpOnly cookie) and route protection
 - [ ] 12. Admin products: create, edit, delete, image path field
