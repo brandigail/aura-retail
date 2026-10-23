@@ -3,7 +3,7 @@
 - [x] 1. Scaffold Next.js (App Router, TS strict, Tailwind), add lucide-react, Drizzle, `.env.example`, `.gitignore`
 - [x] 2. Create the Neon database and set `DATABASE_URL` locally; define Drizzle schema and run the first migration
 - [x] 3. Define `types/` interfaces (Product, Review, Order, OrderItem) and a money helper
-- [ ] 4. Build `Providers` (Theme + Cart) in `app/layout.tsx`; teal design tokens, dark/light toggle with no flash or hydration warnings
+- [x] 4. Build `Providers` (Theme + Cart) in `app/layout.tsx`; teal design tokens, dark/light toggle with no flash or hydration warnings
 - [ ] 5. Seed script with 12 to 20 products, specs and reviews; local images in `/public/products`
 - [ ] 6. Catalog page: grid, category filter, search, sort
 - [ ] 7. Product page `/products/[id]`: gallery, specs, stock badge, rating breakdown, reviews list
