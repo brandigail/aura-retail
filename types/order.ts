@@ -1,0 +1,20 @@
+export type OrderStatus = "pending" | "paid" | "shipped" | "cancelled";
+
+export interface OrderItem {
+  productId: number;
+  name: string;
+  /** Integer cents, snapshotted at purchase time. */
+  unitPrice: number;
+  qty: number;
+}
+
+export interface Order {
+  id: number;
+  email: string;
+  items: OrderItem[];
+  /** Integer cents. */
+  total: number;
+  status: OrderStatus;
+  /** ISO 8601 string. */
+  createdAt: string;
+}
