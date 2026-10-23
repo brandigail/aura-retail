@@ -1,10 +1,17 @@
-import { ThemeToggle } from "@/features/theme/theme-toggle";
+import { Suspense } from "react";
+import { Catalog } from "@/features/catalog/catalog";
+import { CatalogSkeleton } from "@/features/catalog/catalog-skeleton";
 
-export default function Home() {
+export default function Home({ searchParams }: PageProps<"/">) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-4">
-      <h1 className="text-3xl font-semibold text-accent">Aura Retail</h1>
-      <ThemeToggle />
-    </main>
+    <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+      <header className="mb-6">
+        <h1 className="text-3xl font-bold tracking-tight">PC hardware, sorted</h1>
+        <p className="mt-1 text-muted">Processors, graphics cards, storage and more.</p>
+      </header>
+      <Suspense fallback={<CatalogSkeleton />}>
+        <Catalog searchParams={searchParams} />
+      </Suspense>
+    </div>
   );
 }
