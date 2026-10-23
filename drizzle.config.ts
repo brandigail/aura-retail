@@ -8,5 +8,6 @@ export default defineConfig({
   schema: "./db/schema.ts",
   out: "./db/migrations",
   // Only `db:migrate` / `db:studio` connect; `db:generate` works without it.
-  dbCredentials: { url: process.env.DATABASE_URL ?? "" },
+  // Migrations use the direct (unpooled) connection.
+  dbCredentials: { url: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL ?? "" },
 });
