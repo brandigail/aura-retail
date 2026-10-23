@@ -3,18 +3,15 @@ import { notFound } from "next/navigation";
 import { catalogHref } from "@/features/catalog/catalog-params";
 import { formatMoney } from "@/lib/money";
 import { getProductImages, getStockStatus, stockLabel } from "@/lib/product-display";
+import { parseProductId } from "@/lib/product-id";
 import { getProductById, getReviewsForProduct } from "@/lib/product-queries";
 import { AddToCart } from "./add-to-cart";
 import { ProductGallery } from "./product-gallery";
 import { RatingBreakdown } from "./rating-breakdown";
 import { summarizeRatings } from "./rating-summary";
+import { ReviewForm } from "./review-form";
 import { ReviewList } from "./review-list";
 import { SpecsTable } from "./specs-table";
-
-/** Parses a route segment into a positive integer id, or null. */
-export function parseProductId(segment: string): number | null {
-  return /^[1-9]\d{0,9}$/.test(segment) && Number(segment) <= 2_147_483_647 ? Number(segment) : null;
-}
 
 const STOCK_TEXT = {
   "in-stock": "text-emerald-700 dark:text-emerald-300",
@@ -83,6 +80,7 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
         <div className="flex flex-col gap-8">
           <RatingBreakdown summary={summary} />
           <ReviewList reviews={reviews} />
+          <ReviewForm productId={product.id} />
         </div>
       </section>
     </article>

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { ProductDetail, parseProductId } from "@/features/product/product-detail";
+import { ProductDetail } from "@/features/product/product-detail";
 import { ProductSkeleton } from "@/features/product/product-skeleton";
+import { parseProductId } from "@/lib/product-id";
 import { getProductById } from "@/lib/product-queries";
 
 export async function generateMetadata({ params }: PageProps<"/products/[id]">): Promise<Metadata> {
