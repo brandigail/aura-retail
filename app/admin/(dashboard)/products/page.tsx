@@ -5,6 +5,7 @@ import { AdminSkeleton } from "@/features/admin/admin-skeleton";
 import { ProductsTable } from "@/features/admin/products/products-table";
 import { requireAdmin } from "@/lib/admin-auth";
 import { listAdminProducts } from "@/lib/admin-product-queries";
+import { getZarRate } from "@/lib/currency";
 
 async function ProductsList() {
   await requireAdmin();
@@ -22,7 +23,7 @@ async function ProductsList() {
           Add product
         </Link>
       </div>
-      <ProductsTable rows={rows} />
+      <ProductsTable rows={rows} zarRate={getZarRate()} />
     </div>
   );
 }

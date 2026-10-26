@@ -42,10 +42,13 @@ export async function getProductSummaries(filters: CatalogFilters): Promise<Prod
     if (match) conditions.push(match);
   }
 
+  // Sort by what the customer pays; same rounding as `salePrice` in lib/money.ts.
+  const effectivePrice = sql`((${products.price} * (100 - ${products.discountPercent}) + 50) / 100)`;
+
   const orderBy = {
     featured: [asc(products.id)],
-    "price-asc": [asc(products.price), asc(products.id)],
-    "price-desc": [desc(products.price), asc(products.id)],
+    "price-asc": [asc(effectivePrice), asc(products.id)],
+    "price-desc": [desc(effectivePrice), asc(products.id)],
     rating: [sql`coalesce(${ratings.avg}, 0) desc`, desc(ratings.count), asc(products.id)],
     name: [asc(products.name)],
   }[filters.sort];

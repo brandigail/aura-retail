@@ -5,6 +5,8 @@ export interface Product {
   category: string;
   /** Integer cents. */
   price: number;
+  /** Whole-percent sale discount off `price`, 0 to 90. The amount charged is `salePrice(price, discountPercent)`. */
+  discountPercent: number;
   stock: number;
   description: string;
   specs: Record<string, string>;

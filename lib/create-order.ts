@@ -2,6 +2,7 @@ import { eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import type { CheckoutConflict, CheckoutLine } from "@/features/checkout/checkout-types";
+import { salePrice } from "@/lib/money";
 
 interface OrderCustomer {
   name: string;
@@ -29,6 +30,7 @@ async function priceLines(
       id: products.id,
       name: products.name,
       price: products.price,
+      discountPercent: products.discountPercent,
       stock: products.stock,
       withdrawn: products.deletionRequestedAt,
     })
@@ -51,12 +53,13 @@ async function priceLines(
       });
       continue;
     }
-    const base = { productId: product.id, name: product.name, unitPrice: product.price, stock: product.stock, requested: line.qty };
+    const unitPrice = salePrice(product.price, product.discountPercent);
+    const base = { productId: product.id, name: product.name, unitPrice, stock: product.stock, requested: line.qty };
     // A product being withdrawn can't be bought, otherwise its deletion would never finish.
     if (product.withdrawn) conflicts.push({ ...base, stock: 0, reason: "unavailable" });
     else if (product.stock < line.qty) conflicts.push({ ...base, reason: product.stock === 0 ? "unavailable" : "stock" });
-    else if (product.price !== line.unitPrice) conflicts.push({ ...base, reason: "price" });
-    else priced.push({ productId: product.id, name: product.name, unitPrice: product.price, qty: line.qty });
+    else if (unitPrice !== line.unitPrice) conflicts.push({ ...base, reason: "price" });
+    else priced.push({ productId: product.id, name: product.name, unitPrice, qty: line.qty });
   }
   return { priced, conflicts };
 }

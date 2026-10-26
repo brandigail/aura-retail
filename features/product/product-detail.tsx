@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Price } from "@/components/price";
 import { catalogHref } from "@/features/catalog/catalog-params";
-import { formatMoney } from "@/lib/money";
 import { getProductImages, getStockStatus, stockLabel } from "@/lib/product-display";
 import { parseProductId } from "@/lib/product-id";
 import { getProductById, getReviewsForProduct } from "@/lib/product-queries";
@@ -64,7 +64,7 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
               </a>
             )}
           </div>
-          <p className="text-3xl font-bold">{formatMoney(product.price)}</p>
+          <Price price={product.price} discountPercent={product.discountPercent} size="lg" />
           <p className={`font-medium ${STOCK_TEXT[status]}`}>{stockLabel(product.stock)}</p>
           <p className="leading-relaxed text-muted">{product.description}</p>
           <AddToCart product={product} />

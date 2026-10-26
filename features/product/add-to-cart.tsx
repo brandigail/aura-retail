@@ -4,6 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { useCart } from "@/features/cart/cart-provider";
+import { salePrice } from "@/lib/money";
 import { getProductImages } from "@/lib/product-display";
 import type { Product } from "@/types/product";
 
@@ -31,7 +32,7 @@ export function AddToCart({ product }: { product: Product }) {
         productId: product.id,
         slug: product.slug,
         name: product.name,
-        unitPrice: product.price,
+        unitPrice: salePrice(product.price, product.discountPercent),
         stock: product.stock,
         image: getProductImages(product)[0],
       },

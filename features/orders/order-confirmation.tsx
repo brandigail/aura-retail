@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { getNoticesForOrder, getOrderByToken } from "@/lib/order-queries";
 import { OrderNotices } from "./order-notices";
 
@@ -37,14 +37,15 @@ export async function OrderConfirmation({ params }: { params: Promise<{ token: s
               <span>
                 {item.name} <span className="text-muted">× {item.qty}</span>
               </span>
-              <span className="shrink-0 font-medium">{formatMoney(item.qty * item.unitPrice)}</span>
+              <span className="shrink-0 text-right font-medium"><Money cents={item.qty * item.unitPrice} stacked className="items-end" /></span>
             </li>
           ))}
         </ul>
         <p className="mt-3 flex justify-between border-t border-border pt-3 text-lg font-bold">
           <span>Total</span>
-          <span>{formatMoney(order.total)}</span>
+          <span className="text-right"><Money cents={order.total} stacked className="items-end" /></span>
         </p>
+        <p className="mt-2 text-sm font-normal text-muted">Charged in US dollars. Rand amounts are approximate, at today&apos;s display rate.</p>
       </section>
 
       <section aria-labelledby="delivery-heading" className="rounded-lg border border-border p-5">

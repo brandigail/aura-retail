@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Pencil } from "lucide-react";
 import type { AdminProductRow } from "@/lib/admin-product-queries";
-import { formatMoney } from "@/lib/money";
+import { DualPrice } from "@/features/admin/dual-price";
+import { ProductThumb } from "@/features/admin/product-thumb";
+import { formatMoney, salePrice } from "@/lib/money";
 import { getStockStatus } from "@/lib/product-display";
 import { DeleteProductButton } from "./delete-product-button";
 import { DeletionPanel } from "./deletion-panel";
@@ -13,7 +15,7 @@ const STOCK_TEXT = {
   "out-of-stock": "text-red-700 dark:text-red-300",
 } as const;
 
-export function ProductsTable({ rows }: { rows: readonly AdminProductRow[] }) {
+export function ProductsTable({ rows, zarRate }: { rows: readonly AdminProductRow[]; zarRate: number }) {
   if (rows.length === 0) {
     return <p className="rounded-lg border border-dashed border-border p-8 text-center text-muted">No products yet.</p>;
   }
@@ -39,16 +41,28 @@ export function ProductsTable({ rows }: { rows: readonly AdminProductRow[] }) {
             return (
               <tr key={row.id} className="border-t border-border align-top">
                 <td className="px-3 py-3">
-                  <p className="font-medium">{row.name}</p>
-                  <p className="text-muted">{row.slug}</p>
-                  {pending && (
-                    <Suspense fallback={<p className="mt-2 text-muted">Loading deletion status…</p>}>
-                      <DeletionPanel productId={row.id} productName={row.name} />
-                    </Suspense>
-                  )}
+                  <div className="flex items-start gap-3">
+                    <ProductThumb src={row.image} />
+                    <div>
+                      <p className="font-medium">{row.name}</p>
+                      <p className="text-muted">{row.slug}</p>
+                      {pending && (
+                        <Suspense fallback={<p className="mt-2 text-muted">Loading deletion status…</p>}>
+                          <DeletionPanel productId={row.id} productName={row.name} />
+                        </Suspense>
+                      )}
+                    </div>
+                  </div>
                 </td>
                 <td className="px-3 py-3">{row.category}</td>
-                <td className="px-3 py-3 text-right">{formatMoney(row.price)}</td>
+                <td className="px-3 py-3 text-right">
+                  <DualPrice cents={salePrice(row.price, row.discountPercent)} zarRate={zarRate} className="items-end" />
+                  {row.discountPercent > 0 && (
+                    <p className="mt-1 text-xs text-muted">
+                      <span className="line-through">{formatMoney(row.price)}</span> · {row.discountPercent}% off
+                    </p>
+                  )}
+                </td>
                 <td className={`px-3 py-3 text-right font-medium ${STOCK_TEXT[getStockStatus(row.stock)]}`}>{row.stock}</td>
                 <td className="px-3 py-3">{pending ? "Pending deletion" : "Live"}</td>
                 <td className="px-3 py-3">

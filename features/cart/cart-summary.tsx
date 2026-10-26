@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { useCart } from "./cart-provider";
 
 export function CartSummary({ onNavigate }: { onNavigate?: () => void }) {
@@ -13,9 +13,9 @@ export function CartSummary({ onNavigate }: { onNavigate?: () => void }) {
         <span>
           Subtotal <span className="text-sm text-muted">({count} {count === 1 ? "item" : "items"})</span>
         </span>
-        <span className="font-bold">{formatMoney(subtotal)}</span>
+        <span className="text-right font-bold"><Money cents={subtotal} stacked className="items-end" /></span>
       </p>
-      <p className="text-sm text-muted">Demo store: no real payment is taken at checkout.</p>
+      <p className="text-sm text-muted">Rand amounts are approximate; you are charged in US dollars. Demo store: no real payment is taken at checkout.</p>
       <Link
         href="/checkout"
         onClick={onNavigate}

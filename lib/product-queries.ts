@@ -12,6 +12,7 @@ export const productColumns = {
   name: products.name,
   category: products.category,
   price: products.price,
+  discountPercent: products.discountPercent,
   stock: products.stock,
   description: products.description,
   specs: products.specs,

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { formatMoney } from "@/lib/money";
+import { Price } from "@/components/price";
 import { getProductImages, getStockStatus, stockLabel, type StockStatus } from "@/lib/product-display";
 import type { ProductSummary } from "@/types/product";
 
@@ -50,7 +50,7 @@ export function ProductCard({ product, priority = false }: { product: ProductSum
             )}
           </p>
           <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-            <span className="text-lg font-bold">{formatMoney(product.price)}</span>
+            <Price price={product.price} discountPercent={product.discountPercent} />
             <span className={`whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium ${STOCK_STYLES[status]}`}>
               {stockLabel(product.stock)}
             </span>

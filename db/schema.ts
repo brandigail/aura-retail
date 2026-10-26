@@ -22,6 +22,8 @@ export const products = pgTable(
     category: text("category").notNull(),
     /** Integer cents. */
     price: integer("price").notNull(),
+    /** Whole-percent sale discount off `price`; 0 means no discount. */
+    discountPercent: integer("discount_percent").notNull().default(0),
     stock: integer("stock").notNull().default(0),
     description: text("description").notNull().default(""),
     // json, not jsonb: jsonb reorders keys, and specs are shown in the order they were written.
@@ -35,6 +37,7 @@ export const products = pgTable(
     index("products_category_idx").on(t.category),
     check("products_price_nonneg", sql`${t.price} >= 0`),
     check("products_stock_nonneg", sql`${t.stock} >= 0`),
+    check("products_discount_range", sql`${t.discountPercent} between 0 and 90`),
   ],
 );
 

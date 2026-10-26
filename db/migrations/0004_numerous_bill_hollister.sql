@@ -1,0 +1,2 @@
+ALTER TABLE "products" ADD COLUMN "discount_percent" integer DEFAULT 0 NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD CONSTRAINT "products_discount_range" CHECK ("products"."discount_percent" between 0 and 90);

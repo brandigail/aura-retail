@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { QuantityStepper } from "@/components/quantity-stepper";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { PLACEHOLDER_IMAGE } from "@/lib/product-display";
 import type { CartItem } from "@/types/cart";
 import { useCart } from "./cart-provider";
@@ -39,9 +39,9 @@ export function CartLineItem({ item, onNavigate }: CartLineItemProps) {
           >
             {item.name}
           </Link>
-          <p className="shrink-0 font-semibold">{formatMoney(item.qty * item.unitPrice)}</p>
+          <p className="shrink-0 text-right font-semibold"><Money cents={item.qty * item.unitPrice} stacked className="items-end" /></p>
         </div>
-        <p className="text-sm text-muted">{formatMoney(item.unitPrice)} each</p>
+        <p className="text-sm text-muted"><Money cents={item.unitPrice} /> each</p>
         <div className="flex flex-wrap items-center gap-3">
           <QuantityStepper
             compact

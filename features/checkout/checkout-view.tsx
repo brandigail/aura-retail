@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCart } from "@/features/cart/cart-provider";
 import { EmptyCart } from "@/features/cart/empty-cart";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { CheckoutForm } from "./checkout-form";
 
 export function CheckoutView() {
@@ -25,7 +25,7 @@ export function CheckoutView() {
               <span>
                 {item.name} <span className="text-muted">× {item.qty}</span>
               </span>
-              <span className="shrink-0 font-medium">{formatMoney(item.qty * item.unitPrice)}</span>
+              <span className="shrink-0 text-right font-medium"><Money cents={item.qty * item.unitPrice} stacked className="items-end" /></span>
             </li>
           ))}
         </ul>
@@ -33,8 +33,9 @@ export function CheckoutView() {
           <span>
             Total <span className="text-sm text-muted">({count} {count === 1 ? "item" : "items"})</span>
           </span>
-          <span className="font-bold">{formatMoney(subtotal)}</span>
+          <span className="text-right font-bold"><Money cents={subtotal} stacked className="items-end" /></span>
         </p>
+        <p className="mt-2 text-sm text-muted">Rand amounts are approximate; you are charged in US dollars.</p>
         <Link href="/cart" className="mt-3 inline-block text-sm text-accent underline underline-offset-4">
           Edit cart
         </Link>

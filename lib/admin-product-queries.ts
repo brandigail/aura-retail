@@ -1,6 +1,7 @@
 import { and, asc, eq, ne } from "drizzle-orm";
 import { db } from "@/db";
 import { products } from "@/db/schema";
+import { getProductImages } from "@/lib/product-display";
 
 export interface AdminProductRow {
   id: number;
@@ -9,7 +10,11 @@ export interface AdminProductRow {
   category: string;
   /** Integer cents. */
   price: number;
+  /** Whole-percent sale discount off `price`. */
+  discountPercent: number;
   stock: number;
+  /** First product image, or the local placeholder. */
+  image: string;
   imageCount: number;
   /** Set while the product is being withdrawn pending customer acknowledgments. */
   deletionRequestedAt: Date | null;
@@ -23,13 +28,14 @@ export async function listAdminProducts(): Promise<AdminProductRow[]> {
       name: products.name,
       category: products.category,
       price: products.price,
+      discountPercent: products.discountPercent,
       stock: products.stock,
       images: products.images,
       deletionRequestedAt: products.deletionRequestedAt,
     })
     .from(products)
     .orderBy(asc(products.id));
-  return rows.map(({ images, ...row }) => ({ ...row, imageCount: images.length }));
+  return rows.map(({ images, ...row }) => ({ ...row, image: getProductImages({ images })[0], imageCount: images.length }));
 }
 
 /** Includes products pending deletion, unlike the public lookup. */
