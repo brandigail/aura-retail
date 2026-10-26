@@ -12,6 +12,7 @@
     "db:studio": "drizzle-kit studio",
     "seed": "tsx db/seed.ts",
     "seed:orders": "tsx db/seed-orders.ts",
+    "seed:store": "tsx db/seed-store.ts",
     "images": "tsx scripts/generate-product-images.ts"
   },
   "dependencies": {

@@ -3,13 +3,13 @@ import { AdminSkeleton } from "@/features/admin/admin-skeleton";
 import { DiscountManager } from "@/features/admin/discounts/discount-manager";
 import { requireAdmin } from "@/lib/admin-auth";
 import { listAdminProducts } from "@/lib/admin-product-queries";
-import { getZarRate } from "@/lib/currency";
+import { getZarRate } from "@/lib/settings";
 
 async function Discounts() {
   await requireAdmin();
   const rows = await listAdminProducts();
   const categories = [...new Set(rows.map((r) => r.category))].sort();
-  const zarRate = getZarRate();
+  const zarRate = await getZarRate();
 
   return (
     <div className="flex flex-col gap-6">

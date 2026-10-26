@@ -9,7 +9,7 @@ import { OrderStatusForm } from "@/features/admin/orders/order-status-form";
 import { StatusBadge } from "@/features/admin/orders/status-badge";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getAdminOrder } from "@/lib/admin-order-queries";
-import { getZarRate } from "@/lib/currency";
+import { getZarRate } from "@/lib/settings";
 import { parseProductId } from "@/lib/product-id";
 
 const DATE = new Intl.DateTimeFormat("en-ZA", { dateStyle: "full", timeStyle: "short", timeZone: "Africa/Johannesburg" });
@@ -20,7 +20,7 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
   const id = parseProductId((await params).id);
   const order = id === null ? null : await getAdminOrder(id);
   if (id === null || !order) notFound();
-  const zarRate = getZarRate();
+  const zarRate = await getZarRate();
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">

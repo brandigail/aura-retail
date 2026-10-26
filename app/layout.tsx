@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AnnouncementBar } from "@/components/announcement-bar";
 import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { getZarRate } from "@/lib/currency";
 import { themeInitScript } from "@/features/theme/theme-store";
+import { getSettings } from "@/lib/settings";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,12 +19,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Aura Retail",
-  description: "An online store for kitchen, toys, crafts, sport, home, garden and more.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { storeName, tagline } = await getSettings();
+  return {
+    title: { default: storeName, template: `%s | ${storeName}` },
+    description: tagline,
+  };
+}
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const settings = await getSettings();
+
   return (
     <html
       lang="en"
@@ -34,8 +41,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-full flex flex-col">
-        <Providers zarRate={getZarRate()}>
-          <SiteHeader />
+        <Providers zarRate={settings.zarPerUsdHundredths / 100}>
+          <AnnouncementBar text={settings.announcement} />
+          <Suspense fallback={<header className="sticky top-0 z-20 h-16 border-b border-border bg-background" />}>
+            <SiteHeader storeName={settings.storeName} />
+          </Suspense>
           <main className="flex flex-1 flex-col">{children}</main>
           <SiteFooter />
         </Providers>

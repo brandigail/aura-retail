@@ -8,7 +8,7 @@ import { DualPrice } from "@/features/admin/dual-price";
 import { SalesChart } from "@/features/admin/sales-chart";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getSalesStats } from "@/lib/admin-order-queries";
-import { getZarRate } from "@/lib/currency";
+import { getZarRate } from "@/lib/settings";
 import { LOW_STOCK_THRESHOLD, stockLabel } from "@/lib/product-display";
 
 const SALES_DAYS = 30;
@@ -24,7 +24,7 @@ async function Dashboard() {
       .where(lte(products.stock, LOW_STOCK_THRESHOLD))
       .orderBy(asc(products.stock), asc(products.name)),
   ]);
-  const zarRate = getZarRate();
+  const zarRate = await getZarRate();
 
   return (
     <div className="flex flex-col gap-8">

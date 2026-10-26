@@ -18,3 +18,14 @@
 - [ ] 16. `npm run build`, lint and `tsc --noEmit` clean; no console errors
 - [ ] 17. README (pitch, features, stack, architecture, recruiter demo bullets, screenshots)
 - [ ] 18. Deploy to Netlify, set env vars, test live; push to GitHub; update root `LINKS.md`
+
+## Owner-ready phase (added: the store must be complete enough to hand to a real shop owner)
+
+- [x] 19. Store settings in the admin (name, contacts, VAT, shipping rates, Rand rate, announcement bar), DB-backed and cached
+- [x] 20. Storefront redesign: announcement bar, hero, category tiles, sale and featured rows, richer footer
+- [x] 21. Info pages (About, Contact with inbox, Shipping and returns, Privacy, Terms) and admin Messages
+- [ ] 22. Checkout upgrade: shipping options, VAT line, discount codes, simulated card payment, order confirmation emails (outbox)
+- [ ] 23. Admin Discount codes and Emails outbox; order lookup (/track) by order number and email; CSV export of orders
+- [ ] 24. Wishlist, related products, review moderation, customers list
+- [ ] 25. Responsive, accessibility and SEO pass (375px, keyboard, metadata, sitemap)
+- [ ] 26. Owner guide page in the admin (how to run the shop) and Phase 2 production notes (payments, email, domain)

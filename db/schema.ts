@@ -1,4 +1,5 @@
 import {
+  boolean,
   check,
   index,
   integer,
@@ -69,6 +70,16 @@ export const orders = pgTable("orders", {
   address: text("address").notNull(),
   /** Integer cents. */
   total: integer("total").notNull(),
+  /** Integer cents breakdown of `total`: subtotal - discount + shipping. VAT is included in prices and shown separately. */
+  subtotal: integer("subtotal").notNull().default(0),
+  discountCents: integer("discount_cents").notNull().default(0),
+  discountCode: text("discount_code"),
+  shippingCents: integer("shipping_cents").notNull().default(0),
+  shippingMethod: text("shipping_method"),
+  /** VAT contained in `total`, snapshotted at the rate in force when the order was placed. */
+  vatCents: integer("vat_cents").notNull().default(0),
+  paymentMethod: text("payment_method"),
+  paymentRef: text("payment_ref"),
   status: text("status", { enum: ["pending", "paid", "shipped", "cancelled"] })
     .notNull()
     .default("paid"),
@@ -115,3 +126,57 @@ export const orderNotices = pgTable(
     unique("order_notices_order_product_kind").on(t.orderId, t.productId, t.kind),
   ],
 );
+
+/** The shop's single settings row (id = 1), edited by the owner in the admin. */
+export const settings = pgTable("settings", {
+  id: integer("id").primaryKey().default(1),
+  storeName: text("store_name").notNull().default("Aura Retail"),
+  tagline: text("tagline").notNull().default("Everything you need, in one place"),
+  contactEmail: text("contact_email").notNull().default("hello@example.com"),
+  contactPhone: text("contact_phone").notNull().default(""),
+  address: text("address").notNull().default(""),
+  announcement: text("announcement").notNull().default(""),
+  vatPercent: integer("vat_percent").notNull().default(15),
+  standardShippingCents: integer("standard_shipping_cents").notNull().default(800),
+  expressShippingCents: integer("express_shipping_cents").notNull().default(2000),
+  freeShippingOverCents: integer("free_shipping_over_cents").notNull().default(10000),
+  /** Rands per US dollar, in hundredths (1850 = R18.50). Display only; customers are charged in dollars. */
+  zarPerUsdHundredths: integer("zar_per_usd_hundredths").notNull().default(1850),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [check("settings_single_row", sql`${t.id} = 1`)]);
+
+export const discountCodes = pgTable(
+  "discount_codes",
+  {
+    id: serial("id").primaryKey(),
+    code: text("code").notNull().unique(),
+    percent: integer("percent").notNull(),
+    active: boolean("active").notNull().default(true),
+    /** Null means unlimited. */
+    maxUses: integer("max_uses"),
+    usesCount: integer("uses_count").notNull().default(0),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [check("discount_codes_percent_range", sql`${t.percent} between 1 and 90`)],
+);
+
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  message: text("message").notNull(),
+  readAt: timestamp("read_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Every email the shop would send. Delivered by a mail provider once one is connected; always readable here. */
+export const emailOutbox = pgTable("email_outbox", {
+  id: serial("id").primaryKey(),
+  toEmail: text("to_email").notNull(),
+  subject: text("subject").notNull(),
+  body: text("body").notNull(),
+  kind: text("kind", { enum: ["order_confirmation", "order_shipped", "order_cancelled", "contact_reply"] }).notNull(),
+  orderId: integer("order_id"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
