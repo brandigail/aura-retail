@@ -1,9 +1,19 @@
 ﻿import { config } from "dotenv";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import { sql } from "drizzle-orm";
 import { buildSeedReviews } from "./seed-data/reviews";
 import { seedProducts } from "./seed-data/products";
 
 config({ path: ".env.local" });
+
+/** The product's local photos (public/products/<slug>/photo-N.webp), in order. */
+function productImages(slug: string): string[] {
+  return readdirSync(join(process.cwd(), "public", "products", slug))
+    .filter((file) => /^photo-d+.webp$/.test(file))
+    .sort()
+    .map((file) => `/products/${slug}/${file}`);
+}
 
 async function main(): Promise<void> {
   // Imported after dotenv so DATABASE_URL is set when the client is created.
@@ -30,7 +40,7 @@ async function main(): Promise<void> {
         stock: p.stock,
         description: p.description,
         specs: p.specs,
-        images: [`/products/${p.slug}/1.svg`, `/products/${p.slug}/2.svg`],
+        images: productImages(p.slug),
       })),
     )
     .returning({ id: products.id, slug: products.slug });

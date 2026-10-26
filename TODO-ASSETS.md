@@ -2,16 +2,18 @@
 
 ## Product images
 
-Every seeded product currently has two **generated illustrations** (not photographs):
+Every product has real photographs (Pixabay licence), saved as `public/products/<slug>/photo-1.webp` and `photo-2.webp` (1200x900); the fins and the velvet cushion have only one. Credits are in `IMAGE-CREDITS.md`.
 
-- `public/products/<slug>/1.svg`: the product on a tinted background
-- `public/products/<slug>/2.svg`: a detail card with its name and key specs
+These are the closest available match rather than the exact item, so replace them first with your own shots:
 
-They are drawn in code (`scripts/illustrations/`) from each product's name, description and specs, and are rebuilt with `npm run images`. They are good for demoing the store, but a recruiter-ready site would use real product photos.
+- `inkwell-pastel-highlighters-4-pcs` (a single orange highlighter, not a pastel set)
+- `splashline-silicone-swim-cap` (a child in a cap, no product shot)
+- `hearth-nesting-mixing-bowls-3-pcs` (glass bowl of marshmallows, not steel nesting bowls)
+- `pawsome-padded-dog-collar-leash-set` (a puppy on a leash)
+- `trail-35l-hiking-backpack` (a backpack silhouette at sunset)
+- `inkwell-a5-hardcover-notebook-dotted` (a plain hardcover, no dot grid)
+- `inkwell-mesh-desk-organiser` (a pencil pot, not a mesh organiser)
 
-To replace one with a real photo:
-
-1. Add the file (webp, about 1200x900) under `public/products/<slug>/`, e.g. `1.webp`.
-2. In the admin, edit the product and change its image paths (one per line) to point at the new file.
+To replace one: add a webp under `public/products/<slug>/`, then edit the product in the admin and change its image paths (one per line).
 
 `public/products/placeholder.svg` is the fallback for any product with no images.
