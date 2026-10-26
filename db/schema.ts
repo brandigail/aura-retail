@@ -182,7 +182,13 @@ export const emailOutbox = pgTable("email_outbox", {
   toEmail: text("to_email").notNull(),
   subject: text("subject").notNull(),
   body: text("body").notNull(),
-  kind: text("kind", { enum: ["order_confirmation", "order_shipped", "order_cancelled", "contact_reply"] }).notNull(),
+  kind: text("kind", { enum: ["order_confirmation", "order_shipped", "order_cancelled", "order_lookup"] }).notNull(),
   orderId: integer("order_id"),
+  /** The designed HTML version; `body` stays as the plain-text version every mail app can show. */
+  html: text("html"),
+  /** recorded: no mail provider connected, kept here only. sent: handed to the mail provider. failed: the provider refused it. */
+  status: text("status", { enum: ["recorded", "sent", "failed"] }).notNull().default("recorded"),
+  sentAt: timestamp("sent_at", { withTimezone: true }),
+  error: text("error"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

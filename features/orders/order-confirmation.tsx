@@ -2,19 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, Clock } from "lucide-react";
 import { Money } from "@/components/money";
+import { isEmailConfigured } from "@/lib/mailer";
+import { ORDER_STATUS_LABEL } from "@/lib/order-labels";
 import { getNoticesForOrder, getOrderByToken } from "@/lib/order-queries";
 import { getSettings } from "@/lib/settings";
 import { OrderNotices } from "./order-notices";
 import { OrderTotals } from "./order-totals";
 
 const dateFormat = new Intl.DateTimeFormat("en-ZA", { dateStyle: "long", timeStyle: "short", timeZone: "Africa/Johannesburg" });
-
-const STATUS_TEXT = {
-  pending: "Waiting for payment",
-  paid: "Paid, being packed",
-  shipped: "On its way",
-  cancelled: "Cancelled",
-} as const;
 
 /** Awaits the params promise, so render it inside <Suspense>. */
 export async function OrderConfirmation({ params }: { params: Promise<{ token: string }> }) {
@@ -32,9 +27,11 @@ export async function OrderConfirmation({ params }: { params: Promise<{ token: s
         <p className="text-muted">
           Order #{order.id} was placed on {dateFormat.format(new Date(order.createdAt))}.
         </p>
-        <p className="rounded-full border border-border px-3 py-1 text-sm font-medium">Status: {STATUS_TEXT[order.status]}</p>
+        <p className="rounded-full border border-border px-3 py-1 text-sm font-medium">Status: {ORDER_STATUS_LABEL[order.status]}</p>
         <p className="text-sm text-muted">
-          A confirmation for this order is recorded for {order.email}. Demo store: emails are kept in the owner&apos;s inbox instead of being sent.
+          {isEmailConfigured()
+            ? `We've emailed your confirmation to ${order.email}.`
+            : `Demo store: no mail provider is connected, so the confirmation for ${order.email} is kept in the owner's Emails inbox instead of being sent.`}
         </p>
       </div>
 
