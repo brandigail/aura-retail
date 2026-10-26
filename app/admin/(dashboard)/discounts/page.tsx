@@ -12,7 +12,7 @@ async function Discounts() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Discounts</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Product sales</h1>
         <p className="mt-1 text-muted">
           Tick one or many products (or filter by category and select all), type a percentage and apply it. Use the currency menu at the top to see prices in dollars, Rands or both; customers are always charged in dollars.
         </p>

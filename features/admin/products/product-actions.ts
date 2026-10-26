@@ -7,6 +7,7 @@ import { db } from "@/db";
 import { products } from "@/db/schema";
 import { slugTaken } from "@/lib/admin-product-queries";
 import { requireAdmin } from "@/lib/admin-auth";
+import { isUniqueViolation } from "@/lib/db-errors";
 import { attemptProductDeletion, cancelProductDeletion } from "@/lib/product-deletion";
 import { EMPTY_PRODUCT_VALUES, type ProductFormState } from "./product-form-state";
 import { readProductValues, validateProduct } from "./product-validation";
@@ -25,12 +26,6 @@ function refreshCatalog(productId?: number): void {
 
 function formError(message: string, partial: Partial<ProductFormState> = {}): ProductFormState {
   return { status: "error", message, errors: {}, values: EMPTY_PRODUCT_VALUES, ...partial };
-}
-
-/** Postgres unique_violation, which neon-http surfaces on `code` or only in the message. */
-function isUniqueViolation(error: unknown): boolean {
-  const e = error as { code?: string; message?: string } | null;
-  return e?.code === "23505" || /unique constraint|duplicate key/i.test(e?.message ?? "");
 }
 
 export async function createProduct(_previous: ProductFormState, formData: FormData): Promise<ProductFormState> {

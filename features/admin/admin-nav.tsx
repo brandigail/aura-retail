@@ -10,7 +10,8 @@ const LINKS = [
   { href: "/admin/stock", label: "Stock", exact: false },
   { href: "/admin/messages", label: "Messages", exact: false },
   { href: "/admin/emails", label: "Emails", exact: false },
-  { href: "/admin/discounts", label: "Discounts", exact: false },
+  { href: "/admin/discounts", label: "Sales", exact: false },
+  { href: "/admin/codes", label: "Codes", exact: false },
   { href: "/admin/settings", label: "Settings", exact: false },
   { href: "/", label: "View store", exact: true },
 ] as const;
