@@ -22,7 +22,6 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
   const order = id === null ? null : await getAdminOrder(id);
   if (id === null || !order) notFound();
   const settings = await getSettings();
-  const zarRate = settings.zarPerUsdHundredths / 100;
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
@@ -43,7 +42,7 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
               <span>
                 {item.name} <span className="text-muted">× {item.qty}</span>
               </span>
-              <DualPrice cents={item.qty * item.unitPrice} zarRate={zarRate} className="items-end" />
+              <DualPrice cents={item.qty * item.unitPrice} className="items-end" />
             </li>
           ))}
         </ul>

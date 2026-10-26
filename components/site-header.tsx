@@ -6,6 +6,7 @@ import { Heart, Menu, ShoppingCart, X } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { CartDrawer } from "@/features/cart/cart-drawer";
 import { useCart } from "@/features/cart/cart-provider";
+import { CurrencySwitcher } from "@/features/currency/currency-switcher";
 import { ThemeToggle } from "@/features/theme/theme-toggle";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -45,6 +46,7 @@ export function SiteHeader({ storeName }: { storeName: string }) {
               </span>
             )}
           </button>
+          <CurrencySwitcher className="hidden md:block" />
           <ThemeToggle />
           <button
             type="button"
@@ -62,6 +64,10 @@ export function SiteHeader({ storeName }: { storeName: string }) {
       {menuOpen && (
         <nav id="mobile-menu" aria-label="Mobile" className="border-t border-border px-4 py-3 md:hidden">
           <SiteNav layout="stack" onNavigate={() => setMenuOpen(false)} />
+          <div className="mt-2 flex items-center gap-3 border-t border-border pt-3">
+            <span className="text-sm text-muted">Show prices in</span>
+            <CurrencySwitcher />
+          </div>
         </nav>
       )}
       <CartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />

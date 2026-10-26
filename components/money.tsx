@@ -1,31 +1,31 @@
 "use client";
 
-import { useZarRate } from "@/features/currency/currency-provider";
-import { formatMoney, formatZar } from "@/lib/money";
+import { useCurrency } from "@/features/currency/currency-provider";
 
 interface MoneyProps {
   /** Integer USD cents. */
   cents: number;
-  /** Puts the Rand amount on its own line under the dollars. Default is inline after them. */
+  /** Puts the second currency on its own line under the first. Default is inline after it. */
   stacked?: boolean;
   className?: string;
 }
 
-/** A price in US dollars with its approximate Rand equivalent. Customers are charged in dollars. */
+/** A price shown in the viewer's chosen currency (dollars, Rands, or both). Customers are charged in dollars. */
 export function Money({ cents, stacked = false, className = "" }: MoneyProps) {
-  const rand = formatZar(cents, useZarRate());
+  const { main, alt } = useCurrency().format(cents);
 
+  if (alt === null) return <span className={className}>{main}</span>;
   if (stacked) {
     return (
       <span className={`inline-flex flex-col ${className}`}>
-        <span>{formatMoney(cents)}</span>
-        <span className="text-[0.75em] font-normal text-muted">{rand}</span>
+        <span>{main}</span>
+        <span className="text-[0.75em] font-normal text-muted">{alt}</span>
       </span>
     );
   }
   return (
     <span className={className}>
-      {formatMoney(cents)} <span className="text-[0.8em] font-normal text-muted">({rand})</span>
+      {main} <span className="text-[0.8em] font-normal text-muted">({alt})</span>
     </span>
   );
 }

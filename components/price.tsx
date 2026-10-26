@@ -1,7 +1,7 @@
 "use client";
 
-import { useZarRate } from "@/features/currency/currency-provider";
-import { formatMoney, formatZar, salePrice } from "@/lib/money";
+import { useCurrency } from "@/features/currency/currency-provider";
+import { salePrice } from "@/lib/money";
 
 interface PriceProps {
   /** List price in integer cents. */
@@ -11,24 +11,25 @@ interface PriceProps {
   size?: "md" | "lg";
 }
 
-/** The price a customer pays in dollars and Rands; when discounted, also the struck-through list price and the percentage. */
+/** What a customer pays, in their chosen currency; when discounted, also the struck-through list price and the percentage. */
 export function Price({ price, discountPercent, size = "md" }: PriceProps) {
-  const rate = useZarRate();
+  const { format } = useCurrency();
   const discounted = discountPercent > 0;
-  const current = discounted ? salePrice(price, discountPercent) : price;
+  const current = format(discounted ? salePrice(price, discountPercent) : price);
+  const was = format(price);
 
   return (
     <span className="flex flex-col">
       <span className="flex flex-wrap items-baseline gap-x-2">
         <span className={size === "lg" ? "text-3xl font-bold" : "text-lg font-bold"}>
           {discounted && <span className="sr-only">Sale price </span>}
-          {formatMoney(current)}
+          {current.main}
         </span>
         {discounted && (
           <>
             <del className="text-sm text-muted">
               <span className="sr-only">Was </span>
-              {formatMoney(price)}
+              {was.main}
             </del>
             <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground">
               -{discountPercent}%<span className="sr-only"> off</span>
@@ -36,10 +37,12 @@ export function Price({ price, discountPercent, size = "md" }: PriceProps) {
           </>
         )}
       </span>
-      <span className={`text-muted ${size === "lg" ? "text-base" : "text-sm"}`}>
-        {formatZar(current, rate)}
-        {discounted && <del className="ml-2 text-xs">{formatZar(price, rate)}</del>}
-      </span>
+      {current.alt && (
+        <span className={`text-muted ${size === "lg" ? "text-base" : "text-sm"}`}>
+          {current.alt}
+          {discounted && was.alt && <del className="ml-2 text-xs">{was.alt}</del>}
+        </span>
+      )}
     </span>
   );
 }

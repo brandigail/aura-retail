@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InfoPage } from "@/features/info/info-page";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Shipping and returns", description: "Delivery options, costs and how returns work." };
@@ -14,11 +14,11 @@ export default async function ShippingReturnsPage() {
       <h2>Delivery</h2>
       <ul>
         <li>
-          <strong>Standard delivery:</strong> {formatMoney(s.standardShippingCents)}, usually 3 to 5 working days.
-          {s.freeShippingOverCents > 0 && <> Free on orders of {formatMoney(s.freeShippingOverCents)} or more.</>}
+          <strong>Standard delivery:</strong> <Money cents={s.standardShippingCents} />, usually 3 to 5 working days.
+          {s.freeShippingOverCents > 0 && <> Free on orders of <Money cents={s.freeShippingOverCents} /> or more.</>}
         </li>
         <li>
-          <strong>Express delivery:</strong> {formatMoney(s.expressShippingCents)}, usually 1 to 2 working days.
+          <strong>Express delivery:</strong> <Money cents={s.expressShippingCents} />, usually 1 to 2 working days.
         </li>
       </ul>
       <p>

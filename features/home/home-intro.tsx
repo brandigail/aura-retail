@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, RotateCcw, Receipt, ShieldCheck, Truck } from "lucide-react";
 import { ProductCard } from "@/features/catalog/product-card";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { getHomeSections } from "@/lib/home-queries";
 import { getSettings } from "@/lib/settings";
 import type { ProductSummary } from "@/types/product";
@@ -37,13 +37,14 @@ export async function HomeIntro() {
 
   const trust = [
     {
+      key: "delivery",
       icon: Truck,
-      title: settings.freeShippingOverCents > 0 ? `Free delivery over ${formatMoney(settings.freeShippingOverCents)}` : "Fast delivery",
+      title: settings.freeShippingOverCents > 0 ? <>Free delivery over <Money cents={settings.freeShippingOverCents} /></> : "Fast delivery",
       text: "Tracked, nationwide",
     },
-    { icon: ShieldCheck, title: "Secure checkout", text: "Your details stay private" },
-    { icon: RotateCcw, title: "30-day returns", text: "Changed your mind? No problem" },
-    { icon: Receipt, title: `Prices include ${settings.vatPercent}% VAT`, text: "No surprises at checkout" },
+    { key: "secure", icon: ShieldCheck, title: "Secure checkout", text: "Your details stay private" },
+    { key: "returns", icon: RotateCcw, title: "30-day returns", text: "Changed your mind? No problem" },
+    { key: "vat", icon: Receipt, title: `Prices include ${settings.vatPercent}% VAT`, text: "No surprises at checkout" },
   ];
 
   return (
@@ -82,8 +83,8 @@ export async function HomeIntro() {
       </section>
 
       <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {trust.map(({ icon: Icon, title, text }) => (
-          <li key={title} className="flex items-start gap-3 rounded-lg border border-border p-4">
+        {trust.map(({ key, icon: Icon, title, text }) => (
+          <li key={key} className="flex items-start gap-3 rounded-lg border border-border p-4">
             <Icon aria-hidden className="mt-0.5 size-6 shrink-0 text-accent" />
             <div>
               <p className="text-sm font-semibold">{title}</p>

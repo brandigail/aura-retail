@@ -17,10 +17,9 @@ const BUTTON =
 interface DiscountManagerProps {
   rows: readonly AdminProductRow[];
   categories: readonly string[];
-  zarRate: number;
 }
 
-export function DiscountManager({ rows, categories, zarRate }: DiscountManagerProps) {
+export function DiscountManager({ rows, categories }: DiscountManagerProps) {
   const [state, formAction, submitting] = useActionState(applyDiscount, initialState);
   const [category, setCategory] = useState("");
   const [query, setQuery] = useState("");
@@ -129,7 +128,7 @@ export function DiscountManager({ rows, categories, zarRate }: DiscountManagerPr
             </thead>
             <tbody>
               {shown.map((row) => (
-                <DiscountRow key={row.id} row={row} zarRate={zarRate} selected={selected.has(row.id)} previewPercent={previewPercent} onToggle={toggle} />
+                <DiscountRow key={row.id} row={row} selected={selected.has(row.id)} previewPercent={previewPercent} onToggle={toggle} />
               ))}
             </tbody>
           </table>

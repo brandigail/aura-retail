@@ -3,24 +3,21 @@ import { AdminSkeleton } from "@/features/admin/admin-skeleton";
 import { DiscountManager } from "@/features/admin/discounts/discount-manager";
 import { requireAdmin } from "@/lib/admin-auth";
 import { listAdminProducts } from "@/lib/admin-product-queries";
-import { getZarRate } from "@/lib/settings";
 
 async function Discounts() {
   await requireAdmin();
   const rows = await listAdminProducts();
   const categories = [...new Set(rows.map((r) => r.category))].sort();
-  const zarRate = await getZarRate();
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Discounts</h1>
         <p className="mt-1 text-muted">
-          Tick one or many products (or filter by category and select all), type a percentage and apply it. Rand amounts use R{zarRate} per $1
-          and are for reference; customers are charged in dollars.
+          Tick one or many products (or filter by category and select all), type a percentage and apply it. Use the currency menu at the top to see prices in dollars, Rands or both; customers are always charged in dollars.
         </p>
       </div>
-      <DiscountManager rows={rows} categories={categories} zarRate={zarRate} />
+      <DiscountManager rows={rows} categories={categories} />
     </div>
   );
 }

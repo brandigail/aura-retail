@@ -1,10 +1,17 @@
-import { formatMoney, formatZar } from "@/lib/money";
+"use client";
+
+import { useCurrency } from "@/features/currency/currency-provider";
 import type { DailySales } from "@/lib/admin-order-queries";
 
 const DAY = new Intl.DateTimeFormat("en-ZA", { day: "numeric", month: "short", timeZone: "UTC" });
 
 /** Revenue per day as CSS bars; each bar carries its figures in a tooltip and for screen readers. */
-export function SalesChart({ daily, zarRate }: { daily: readonly DailySales[]; zarRate: number }) {
+export function SalesChart({ daily }: { daily: readonly DailySales[] }) {
+  const { format } = useCurrency();
+  const show = (cents: number) => {
+    const { main, alt } = format(cents);
+    return alt ? `${main} (${alt})` : main;
+  };
   const max = Math.max(...daily.map((d) => d.revenue), 1);
   const first = daily[0];
   const last = daily[daily.length - 1];
@@ -17,21 +24,21 @@ export function SalesChart({ daily, zarRate }: { daily: readonly DailySales[]; z
           <li
             key={d.day}
             className="group relative flex h-full flex-1 items-end"
-            title={`${DAY.format(new Date(d.day))}: ${d.orders} ${d.orders === 1 ? "order" : "orders"}, ${formatMoney(d.revenue)} (${formatZar(d.revenue, zarRate)})`}
+            title={`${DAY.format(new Date(d.day))}: ${d.orders} ${d.orders === 1 ? "order" : "orders"}, ${show(d.revenue)}`}
           >
             <span
               className={`w-full rounded-t ${d.revenue > 0 ? "bg-accent group-hover:opacity-80" : "bg-surface"}`}
               style={{ height: d.revenue > 0 ? `${Math.max((d.revenue / max) * 100, 4)}%` : "2px" }}
             />
             <span className="sr-only">
-              {DAY.format(new Date(d.day))}: {d.orders} orders, {formatMoney(d.revenue)}
+              {DAY.format(new Date(d.day))}: {d.orders} orders, {format(d.revenue).main}
             </span>
           </li>
         ))}
       </ul>
       <div aria-hidden className="flex justify-between text-xs text-muted">
         <span>{DAY.format(new Date(first.day))}</span>
-        <span>Peak day {formatMoney(max === 1 ? 0 : max)}</span>
+        <span>Peak day {format(max === 1 ? 0 : max).main}</span>
         <span>{DAY.format(new Date(last.day))}</span>
       </div>
     </figure>

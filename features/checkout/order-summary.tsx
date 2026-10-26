@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { Money } from "@/components/money";
 import { useCart } from "@/features/cart/cart-provider";
+import { useCurrency } from "@/features/currency/currency-provider";
+import { formatMoney } from "@/lib/money";
 import type { OrderPricing } from "@/lib/order-pricing";
 import { DiscountCodeBox, type AppliedDiscount } from "./discount-code-box";
 
@@ -25,6 +27,7 @@ function Row({ label, children, strong = false }: { label: string; children: Rea
 
 export function OrderSummary({ pricing, vatPercent, shippingLabel, discount, onDiscountChange }: OrderSummaryProps) {
   const { items, count } = useCart();
+  const { mode } = useCurrency();
 
   return (
     <aside aria-labelledby="summary-heading" className="flex h-fit flex-col gap-4 rounded-lg border border-border p-5 lg:sticky lg:top-24">
@@ -53,6 +56,9 @@ export function OrderSummary({ pricing, vatPercent, shippingLabel, discount, onD
         <div className="border-t border-border pt-3">
           <Row label="Total" strong><Money cents={pricing.total} stacked className="items-end" /></Row>
         </div>
+        {mode === "zar" && (
+          <p className="rounded-md bg-surface p-2 text-sm font-medium">You will be charged {formatMoney(pricing.total)} in US dollars. The Rand amount is a guide.</p>
+        )}
         <p className="text-xs text-muted">Includes {vatPercent}% VAT of <Money cents={pricing.vatCents} />. Charged in US dollars; Rand amounts are approximate.</p>
       </dl>
 

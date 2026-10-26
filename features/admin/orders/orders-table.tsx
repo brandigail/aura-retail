@@ -5,7 +5,7 @@ import { StatusBadge } from "./status-badge";
 
 const DATE = new Intl.DateTimeFormat("en-ZA", { dateStyle: "medium", timeStyle: "short", timeZone: "Africa/Johannesburg" });
 
-export function OrdersTable({ rows, zarRate }: { rows: readonly AdminOrderRow[]; zarRate: number }) {
+export function OrdersTable({ rows }: { rows: readonly AdminOrderRow[] }) {
   if (rows.length === 0) {
     return <p className="rounded-lg border border-dashed border-border p-8 text-center text-muted">No orders yet. They appear here as customers check out.</p>;
   }
@@ -38,7 +38,7 @@ export function OrdersTable({ rows, zarRate }: { rows: readonly AdminOrderRow[];
               </td>
               <td className="px-3 py-3 whitespace-nowrap">{DATE.format(new Date(row.createdAt))}</td>
               <td className="px-3 py-3 text-right">{row.itemCount}</td>
-              <td className="px-3 py-3 text-right"><DualPrice cents={row.total} zarRate={zarRate} className="items-end" /></td>
+              <td className="px-3 py-3 text-right"><DualPrice cents={row.total} className="items-end" /></td>
               <td className="px-3 py-3"><StatusBadge status={row.status} /></td>
             </tr>
           ))}

@@ -4,7 +4,8 @@ import { Pencil } from "lucide-react";
 import type { AdminProductRow } from "@/lib/admin-product-queries";
 import { DualPrice } from "@/features/admin/dual-price";
 import { ProductThumb } from "@/features/admin/product-thumb";
-import { formatMoney, salePrice } from "@/lib/money";
+import { Money } from "@/components/money";
+import { salePrice } from "@/lib/money";
 import { getStockStatus } from "@/lib/product-display";
 import { DeleteProductButton } from "./delete-product-button";
 import { DeletionPanel } from "./deletion-panel";
@@ -15,7 +16,7 @@ const STOCK_TEXT = {
   "out-of-stock": "text-red-700 dark:text-red-300",
 } as const;
 
-export function ProductsTable({ rows, zarRate }: { rows: readonly AdminProductRow[]; zarRate: number }) {
+export function ProductsTable({ rows }: { rows: readonly AdminProductRow[] }) {
   if (rows.length === 0) {
     return <p className="rounded-lg border border-dashed border-border p-8 text-center text-muted">No products yet.</p>;
   }
@@ -56,10 +57,10 @@ export function ProductsTable({ rows, zarRate }: { rows: readonly AdminProductRo
                 </td>
                 <td className="px-3 py-3">{row.category}</td>
                 <td className="px-3 py-3 text-right">
-                  <DualPrice cents={salePrice(row.price, row.discountPercent)} zarRate={zarRate} className="items-end" />
+                  <DualPrice cents={salePrice(row.price, row.discountPercent)} className="items-end" />
                   {row.discountPercent > 0 && (
                     <p className="mt-1 text-xs text-muted">
-                      <span className="line-through">{formatMoney(row.price)}</span> · {row.discountPercent}% off
+                      <span className="line-through"><Money cents={row.price} /></span> · {row.discountPercent}% off
                     </p>
                   )}
                 </td>
