@@ -11,6 +11,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx db/seed.ts",
+    "seed:orders": "tsx db/seed-orders.ts",
     "images": "tsx scripts/generate-product-images.ts"
   },
   "dependencies": {

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/admin", label: "Dashboard", exact: true },
   { href: "/admin/products", label: "Products", exact: false },
+  { href: "/admin/orders", label: "Orders", exact: false },
   { href: "/admin/stock", label: "Stock", exact: false },
   { href: "/admin/discounts", label: "Discounts", exact: false },
   { href: "/", label: "View store", exact: true },

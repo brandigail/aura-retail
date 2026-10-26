@@ -12,8 +12,8 @@
 - [x] 10. Mock checkout: create order, decrement stock in one transaction
 - [x] 11. Admin login (`ADMIN_PASSWORD`, signed httpOnly cookie) and route protection
 - [x] 12. Admin products: create, edit, delete, image path field
-- [ ] 13. Admin stock adjustments and low-stock list
-- [ ] 14. Admin orders list and analytics (revenue, orders per day)
+- [x] 13. Admin stock adjustments and low-stock list
+- [x] 14. Admin orders list and analytics (revenue, orders per day)
 - [ ] 15. Responsive pass at 375px, accessibility pass, empty and error states
 - [ ] 16. `npm run build`, lint and `tsc --noEmit` clean; no console errors
 - [ ] 17. README (pitch, features, stack, architecture, recruiter demo bullets, screenshots)
