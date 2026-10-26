@@ -14,10 +14,10 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="flex flex-col gap-4" noValidate>
-      {/* Honeypot: hidden from people and assistive tech, tempting to bots. */}
+      {/* Honeypot: hidden from people and assistive tech, tempting to bots. The odd name keeps browser autofill away from it. */}
       <div aria-hidden className="absolute -left-[9999px]">
-        <label htmlFor="website">Leave this field empty</label>
-        <input id="website" name="website" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="contact-hp">Leave this field empty</label>
+        <input id="contact-hp" name="contact_hp_x7" tabIndex={-1} autoComplete="off" data-lpignore="true" data-1p-ignore />
       </div>
 
       <div className="flex flex-col gap-1">

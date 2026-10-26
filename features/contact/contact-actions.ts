@@ -20,9 +20,9 @@ export async function sendContactMessage(_previous: ContactFormState, formData: 
     message: String(formData.get("message") ?? "").trim(),
   };
 
-  // Hidden field real visitors never fill in; bots do. Pretend success so they learn nothing.
-  if (String(formData.get("website") ?? "") !== "") {
-    return { status: "ok", message: "Thanks! Your message has been sent.", errors: {}, values: { name: "", email: "", message: "" } };
+  // Hidden field real visitors never fill in; bots do. A person is told to retry rather than silently dropped.
+  if (String(formData.get("contact_hp_x7") ?? "") !== "") {
+    return { status: "error", message: "We couldn't send your message. Please reload the page and try again.", errors: {}, values };
   }
 
   const errors: ContactFormState["errors"] = {};
