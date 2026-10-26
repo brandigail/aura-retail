@@ -2,9 +2,14 @@
 
 A complete online shop that the owner runs entirely from their own admin: products, stock, sales, discount codes, orders, customers, emails and settings, with no third-party store platform in the middle. It is a working template for a small retailer, built to replace a hosted shop builder.
 
-**Live demo:** not deployed yet (kept local until approved) · **Status:** feature-complete template
+**Live demo:** https://aura-retail-demo.netlify.app · **Status:** feature-complete template
 
-> Card payments in this version are a clearly labelled demonstration that only accepts a test card. See *Phase 2* for what a production launch adds.
+> This is a public demo. Card payments are a clearly labelled demonstration that only accepts a test card, and no real emails are sent (they are recorded on the owner's *Emails* page instead). See *Phase 2* for what a production launch adds.
+
+## Try it
+
+- **As a shopper:** just browse. To check out, use the test card `4242 4242 4242 4242` (any future expiry, any code) and the discount code `WELCOME10`.
+- **As the shop owner:** the control panel is at [/admin](https://aura-retail-demo.netlify.app/admin) and is password protected. The demo password is available on request.
 
 ## What to demo to a recruiter
 
