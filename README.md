@@ -9,7 +9,7 @@ A complete online shop that the owner runs entirely from their own admin: produc
 ## Try it
 
 - **As a shopper:** just browse. To check out, use the test card `4242 4242 4242 4242` (any future expiry, any code) and the discount code `WELCOME10`.
-- **As the shop owner:** the control panel is at [/admin](https://aura-retail-demo.netlify.app/admin) and is password protected. The demo password is available on request.
+- **As the shop owner:** sign in at [/admin](https://aura-retail-demo.netlify.app/admin) with the password `Legoman@1`. This is a shared demo account, so anyone can change anything there; the sample data can be reset at any time.
 
 ## What to demo to a recruiter
 
