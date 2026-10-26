@@ -11,6 +11,7 @@ import { ProductGallery } from "./product-gallery";
 import { RatingBreakdown } from "./rating-breakdown";
 import { summarizeRatings } from "./rating-summary";
 import { ReviewForm } from "./review-form";
+import { RelatedProducts } from "./related-products";
 import { ReviewList } from "./review-list";
 import { SpecsTable } from "./specs-table";
 
@@ -87,6 +88,8 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
           <ReviewForm productId={product.id} />
         </div>
       </section>
+
+      <RelatedProducts productId={product.id} category={product.category} />
     </article>
   );
 }

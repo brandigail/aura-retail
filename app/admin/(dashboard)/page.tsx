@@ -28,10 +28,14 @@ async function Dashboard() {
     <div className="flex flex-col gap-8">
       <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
 
-      <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-lg border border-border p-5">
           <dt className="text-sm text-muted">Revenue, last {SALES_DAYS} days</dt>
           <dd className="mt-1 text-2xl font-bold"><DualPrice cents={stats.revenue} /></dd>
+        </div>
+        <div className="rounded-lg border border-border p-5">
+          <dt className="text-sm text-muted">VAT included in those sales</dt>
+          <dd className="mt-1 text-2xl font-bold"><DualPrice cents={stats.vat} /></dd>
         </div>
         <div className="rounded-lg border border-border p-5">
           <dt className="text-sm text-muted">Orders</dt>
@@ -40,6 +44,12 @@ async function Dashboard() {
         <div className="rounded-lg border border-border p-5">
           <dt className="text-sm text-muted">Average order</dt>
           <dd className="mt-1 text-2xl font-bold"><DualPrice cents={stats.averageOrder} /></dd>
+        </div>
+        <div className="rounded-lg border border-border p-5">
+          <dt className="text-sm text-muted">Waiting for bank transfer</dt>
+          <dd className="mt-1 text-2xl font-bold">
+            <Link href="/admin/orders" className="hover:underline">{stats.awaitingPayment}</Link>
+          </dd>
         </div>
         <div className="rounded-lg border border-border p-5">
           <dt className="text-sm text-muted">Low or out of stock</dt>

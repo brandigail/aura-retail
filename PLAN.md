@@ -26,6 +26,6 @@
 - [x] 21. Info pages (About, Contact with inbox, Shipping and returns, Privacy, Terms) and admin Messages
 - [x] 22. Checkout upgrade: shipping options, VAT line, discount codes, simulated card payment, order confirmation emails (outbox)
 - [x] 23. Admin Discount codes and Emails outbox; order lookup (/track) by order number and email; CSV export of orders
-- [ ] 24. Wishlist, related products, review moderation, customers list
+- [x] 24. Wishlist, related products, review moderation, customers list
 - [ ] 25. Responsive, accessibility and SEO pass (375px, keyboard, metadata, sitemap)
 - [ ] 26. Owner guide page in the admin (how to run the shop) and Phase 2 production notes (payments, email, domain)

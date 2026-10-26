@@ -17,10 +17,10 @@ export async function submitReview(
   _previous: ReviewFormState,
   formData: FormData,
 ): Promise<ReviewFormState> {
-  // Honeypot: real users never see or fill this field. Pretend success so bots learn nothing.
-  const honeypot = formData.get("website");
+  // Honeypot: real users never see or fill this field. A person is told to retry rather than silently dropped.
+  const honeypot = formData.get("review_hp_x3");
   if (typeof honeypot === "string" && honeypot !== "") {
-    return { status: "success", message: "Thanks for your review!", errors: {}, values: EMPTY_REVIEW_VALUES };
+    return { status: "error", message: "We couldn't post your review. Please reload the page and try again.", errors: {}, values: EMPTY_REVIEW_VALUES };
   }
 
   const productId = parseProductId(productSegment);

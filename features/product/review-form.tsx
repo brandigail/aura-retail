@@ -112,10 +112,10 @@ export function ReviewForm({ productId }: { productId: number }) {
         {error("body")}
       </div>
 
-      {/* Honeypot for bots; hidden from people and assistive tech. */}
+      {/* Honeypot for bots; hidden from people and assistive tech. The odd name keeps browser autofill away from it. */}
       <div aria-hidden className="absolute -left-[9999px]">
-        <label htmlFor="review-website">Leave this empty</label>
-        <input id="review-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="review-hp">Leave this empty</label>
+        <input id="review-hp" name="review_hp_x3" type="text" tabIndex={-1} autoComplete="off" data-lpignore="true" data-1p-ignore />
       </div>
 
       <div className="flex flex-wrap items-center gap-3">

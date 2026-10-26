@@ -37,6 +37,10 @@ export interface SalesStats {
   orders: number;
   /** Integer cents. */
   averageOrder: number;
+  /** Integer cents: the VAT contained in the revenue above. */
+  vat: number;
+  /** Orders still waiting for a bank transfer, whatever their age. */
+  awaitingPayment: number;
   daily: DailySales[];
   topProducts: TopProduct[];
 }
@@ -74,12 +78,13 @@ export async function getSalesStats(days = 30): Promise<SalesStats> {
   since.setUTCHours(0, 0, 0, 0);
   since.setUTCDate(since.getUTCDate() - (days - 1));
 
-  const [dailyRows, topRows] = await Promise.all([
+  const [dailyRows, topRows, [{ pending }]] = await Promise.all([
     db
       .select({
         day: sql<string>`to_char(${orders.createdAt} at time zone 'UTC', 'YYYY-MM-DD')`,
         orders: sql<number>`count(*)::int`,
         revenue: sql<number>`coalesce(sum(${orders.total}), 0)::int`,
+        vat: sql<number>`coalesce(sum(${orders.vatCents}), 0)::int`,
       })
       .from(orders)
       .where(and(gte(orders.createdAt, since), ne(orders.status, "cancelled")))
@@ -97,6 +102,7 @@ export async function getSalesStats(days = 30): Promise<SalesStats> {
       .groupBy(orderItems.productId)
       .orderBy(sql`sum(${orderItems.qty} * ${orderItems.unitPrice}) desc`)
       .limit(5),
+    db.select({ pending: sql<number>`count(*)::int` }).from(orders).where(eq(orders.status, "pending")),
   ]);
 
   const byDay = new Map(dailyRows.map((r) => [r.day, r]));
@@ -115,6 +121,8 @@ export async function getSalesStats(days = 30): Promise<SalesStats> {
     revenue,
     orders: orderCount,
     averageOrder: orderCount === 0 ? 0 : Math.round(revenue / orderCount),
+    vat: dailyRows.reduce((sum, r) => sum + r.vat, 0),
+    awaitingPayment: pending,
     daily,
     topProducts: topRows,
   };
