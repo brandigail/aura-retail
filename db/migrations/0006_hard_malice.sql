@@ -1,0 +1,2 @@
+ALTER TABLE "settings" ADD COLUMN "bank_details" text DEFAULT '' NOT NULL;--> statement-breakpoint
+ALTER TABLE "discount_codes" ADD CONSTRAINT "discount_codes_uses_within_max" CHECK ("discount_codes"."max_uses" is null or "discount_codes"."uses_count" <= "discount_codes"."max_uses");

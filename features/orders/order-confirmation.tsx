@@ -1,29 +1,52 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Clock } from "lucide-react";
 import { Money } from "@/components/money";
 import { getNoticesForOrder, getOrderByToken } from "@/lib/order-queries";
+import { getSettings } from "@/lib/settings";
 import { OrderNotices } from "./order-notices";
+import { OrderTotals } from "./order-totals";
 
-const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short", timeZone: "UTC" });
+const dateFormat = new Intl.DateTimeFormat("en-ZA", { dateStyle: "long", timeStyle: "short", timeZone: "Africa/Johannesburg" });
+
+const STATUS_TEXT = {
+  pending: "Waiting for payment",
+  paid: "Paid, being packed",
+  shipped: "On its way",
+  cancelled: "Cancelled",
+} as const;
 
 /** Awaits the params promise, so render it inside <Suspense>. */
 export async function OrderConfirmation({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const order = await getOrderByToken(token);
   if (!order) notFound();
-  const notices = await getNoticesForOrder(order.id);
+  const [notices, settings] = await Promise.all([getNoticesForOrder(order.id), getSettings()]);
+  const awaitingEft = order.status === "pending" && order.paymentMethod?.startsWith("EFT");
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <div className="flex flex-col items-center gap-2 text-center">
-        <CheckCircle2 aria-hidden className="size-12 text-accent" />
+        {awaitingEft ? <Clock aria-hidden className="size-12 text-amber-600" /> : <CheckCircle2 aria-hidden className="size-12 text-accent" />}
         <h1 className="text-3xl font-bold tracking-tight">Thank you, {order.name.split(" ")[0]}!</h1>
         <p className="text-muted">
-          Order #{order.id} was placed on {dateFormat.format(new Date(order.createdAt))} UTC.
+          Order #{order.id} was placed on {dateFormat.format(new Date(order.createdAt))}.
         </p>
-        <p className="text-sm text-muted">Demo store: no payment was taken and no email was sent.</p>
+        <p className="rounded-full border border-border px-3 py-1 text-sm font-medium">Status: {STATUS_TEXT[order.status]}</p>
+        <p className="text-sm text-muted">
+          A confirmation for this order is recorded for {order.email}. Demo store: emails are kept in the owner&apos;s inbox instead of being sent.
+        </p>
       </div>
+
+      {awaitingEft && (
+        <section aria-labelledby="eft-heading" className="rounded-lg border border-amber-600 bg-amber-50 p-5 text-amber-900 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100">
+          <h2 id="eft-heading" className="text-xl font-semibold">Pay by bank transfer</h2>
+          <p className="mt-1">
+            Please pay <strong><Money cents={order.total} /></strong> using <strong>Order {order.id}</strong> as your payment reference. We ship as soon as the money reaches us.
+          </p>
+          {settings.bankDetails && <pre className="mt-3 whitespace-pre-wrap rounded-md bg-background/60 p-3 font-sans text-foreground">{settings.bankDetails}</pre>}
+        </section>
+      )}
 
       <OrderNotices token={order.token} orderId={order.id} notices={notices} />
 
@@ -41,28 +64,40 @@ export async function OrderConfirmation({ params }: { params: Promise<{ token: s
             </li>
           ))}
         </ul>
-        <p className="mt-3 flex justify-between border-t border-border pt-3 text-lg font-bold">
-          <span>Total</span>
-          <span className="text-right"><Money cents={order.total} stacked className="items-end" /></span>
-        </p>
-        <p className="mt-2 text-sm font-normal text-muted">Charged in US dollars. Rand amounts are approximate, at today&apos;s display rate.</p>
+        <OrderTotals order={order} vatPercent={settings.vatPercent} />
+        <p className="mt-2 text-sm text-muted">Charged in US dollars. Rand amounts are approximate.</p>
       </section>
 
       <section aria-labelledby="delivery-heading" className="rounded-lg border border-border p-5">
         <h2 id="delivery-heading" className="mb-2 text-xl font-semibold">
-          Delivery
+          Delivery and payment
         </h2>
         <p className="font-medium">{order.name}</p>
         <p className="whitespace-pre-line text-muted">{order.address}</p>
         <p className="mt-2 text-muted">{order.email}</p>
+        {order.paymentMethod && (
+          <p className="mt-3 text-sm">
+            <span className="text-muted">Payment: </span>
+            {order.paymentMethod}
+            {order.paymentRef && <span className="text-muted"> (ref {order.paymentRef})</span>}
+          </p>
+        )}
       </section>
 
-      <Link
-        href="/"
-        className="mx-auto rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        Continue shopping
-      </Link>
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link
+          href="/"
+          className="rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          Continue shopping
+        </Link>
+        <Link
+          href="/track"
+          className="rounded-md border border-border px-6 py-3 font-semibold hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          Track another order
+        </Link>
+      </div>
     </div>
   );
 }

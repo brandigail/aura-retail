@@ -43,6 +43,13 @@
       "when": 1793001382046,
       "tag": "0005_past_lenny_balinger",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793002808144,
+      "tag": "0006_hard_malice",
+      "breakpoints": true
     }
   ]
 }

@@ -1,10 +1,14 @@
 import { config } from "dotenv";
 import { like } from "drizzle-orm";
+import { priceOrder } from "../lib/order-pricing";
 
 config({ path: ".env.local" });
 
 const DEMO_EMAIL_PATTERN = "%@demo.aura-retail.test";
 const DAYS = 30;
+
+/** The shop's default prices, used so demo orders carry a realistic breakdown. */
+const PRICING = { vatPercent: 15, standardShippingCents: 800, expressShippingCents: 2000, freeShippingOverCents: 10000 } as const;
 
 const CUSTOMERS: readonly { name: string; city: string; street: string }[] = [
   { name: "Thandi Nkosi", city: "Johannesburg, 2196", street: "14 Jan Smuts Avenue, Parkwood" },
@@ -60,7 +64,11 @@ async function main(): Promise<void> {
         const unitPrice = Math.floor((p.price * (100 - p.discountPercent) + 50) / 100);
         lines.set(p.id, { name: p.name, unitPrice, qty: 1 + Math.floor(rand() * 2) });
       }
-      const total = [...lines.values()].reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
+      const subtotal = [...lines.values()].reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
+      const useCode = rand() < 0.2;
+      const method = rand() < 0.2 ? "express" : "standard";
+      const pricing = priceOrder(PRICING, subtotal, method, useCode ? 10 : 0);
+      const byEft = rand() < 0.25;
       const placed = new Date(now - day * 86_400_000 - Math.floor(rand() * 12) * 3_600_000);
       const age = rand();
       const status = day > 7 ? (age < 0.06 ? "cancelled" : "shipped") : day > 2 ? (age < 0.55 ? "shipped" : "paid") : age < 0.7 ? "paid" : "pending";
@@ -71,7 +79,15 @@ async function main(): Promise<void> {
           name: customer.name,
           email: `${customer.name.toLowerCase().replace(/[^a-z]+/g, ".")}@demo.aura-retail.test`,
           address: `${customer.street}\n${customer.city}\nSouth Africa`,
-          total,
+          total: pricing.total,
+          subtotal: pricing.subtotal,
+          discountCents: pricing.discountCents,
+          discountCode: useCode ? "WELCOME10" : null,
+          shippingCents: pricing.shippingCents,
+          shippingMethod: method,
+          vatCents: pricing.vatCents,
+          paymentMethod: byEft ? "EFT / bank transfer" : `Card ending ${4000 + Math.floor(rand() * 5000)} (demo)`,
+          paymentRef: byEft ? null : `DEMO-${Math.floor(rand() * 0xffffff).toString(16).toUpperCase().padStart(6, "0")}`,
           status,
           createdAt: placed,
         })

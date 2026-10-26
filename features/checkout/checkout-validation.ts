@@ -1,3 +1,5 @@
+import { isPaymentMethod, type PaymentMethod } from "@/lib/demo-payment";
+import { isShippingMethod, type ShippingMethod } from "@/lib/order-pricing";
 import type { CheckoutField, CheckoutLine } from "./checkout-types";
 
 export const CHECKOUT_LIMITS = {
@@ -12,7 +14,19 @@ export const CHECKOUT_LIMITS = {
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export type CheckoutValidation =
-  | { ok: true; value: { name: string; email: string; address: string; lines: CheckoutLine[] } }
+  | {
+      ok: true;
+      value: {
+        name: string;
+        email: string;
+        address: string;
+        lines: CheckoutLine[];
+        shippingMethod: ShippingMethod;
+        paymentMethod: PaymentMethod;
+        /** The code as typed (already applied in the summary), or an empty string. */
+        discountCode: string;
+      };
+    }
   | { ok: false; errors: Partial<Record<CheckoutField, string>>; values: Record<CheckoutField, string>; message: string };
 
 function text(formData: FormData, key: string): string {
@@ -70,5 +84,10 @@ export function validateCheckout(formData: FormData): CheckoutValidation {
   if (!lines) return { ok: false, errors, values, message: "Your cart is empty or invalid. Please review your cart." };
   if (Object.keys(errors).length > 0) return { ok: false, errors, values, message: "Please fix the highlighted fields." };
 
-  return { ok: true, value: { ...values, lines } };
+  const shippingMethod = text(formData, "shippingMethod");
+  const paymentMethod = text(formData, "paymentMethod");
+  if (!isShippingMethod(shippingMethod)) return { ok: false, errors, values, message: "Choose a delivery option." };
+  if (!isPaymentMethod(paymentMethod)) return { ok: false, errors, values, message: "Choose a payment method." };
+
+  return { ok: true, value: { ...values, lines, shippingMethod, paymentMethod, discountCode: text(formData, "discountCode") } };
 }

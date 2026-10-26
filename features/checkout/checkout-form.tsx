@@ -1,12 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useTransition, type FormEvent } from "react";
 import { useCart } from "@/features/cart/cart-provider";
+import type { PaymentMethod } from "@/lib/demo-payment";
 import { formatMoney } from "@/lib/money";
+import type { ShippingMethod } from "@/lib/order-pricing";
 import { placeOrder } from "./place-order";
 import { initialCheckoutState, type CheckoutConflict, type CheckoutField } from "./checkout-types";
 import { CHECKOUT_LIMITS } from "./checkout-validation";
+import { PaymentOptions } from "./payment-options";
+import { ShippingOptions } from "./shipping-options";
 
 const inputClass =
   "w-full rounded-md border border-border bg-background px-3 py-2.5 text-base placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent aria-[invalid=true]:border-red-600 dark:aria-[invalid=true]:border-red-400";
@@ -22,11 +26,26 @@ function conflictText(c: CheckoutConflict): string {
   }
 }
 
-export function CheckoutForm() {
+interface CheckoutFormProps {
+  shippingMethod: ShippingMethod;
+  onShippingChange: (method: ShippingMethod) => void;
+  standardShippingCents: number;
+  expressShippingCents: number;
+  freeShippingOverCents: number;
+  /** The code applied in the summary, or an empty string. */
+  discountCode: string;
+  /** Integer cents the customer will pay. */
+  total: number;
+  bankDetails: string;
+}
+
+export function CheckoutForm(props: CheckoutFormProps) {
   const router = useRouter();
   const { items, clearCart, reconcileItems } = useCart();
   const [state, formAction, pending] = useActionState(placeOrder, initialCheckoutState);
   const [resolved, setResolved] = useState<typeof state | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     if (state.status !== "success" || !state.token) return;
@@ -37,6 +56,7 @@ export function CheckoutForm() {
   const { values, errors } = state;
   const showConflicts = state.status === "conflict" && resolved !== state;
   const cartPayload = JSON.stringify(items.map(({ productId, qty, unitPrice }) => ({ productId, qty, unitPrice })));
+  const busy = pending || state.status === "success";
 
   function fieldProps(field: CheckoutField) {
     return {
@@ -55,15 +75,23 @@ export function CheckoutForm() {
     ) : null;
   }
 
+  /**
+   * Submitting by hand, instead of `<form action>`, stops React resetting the form after every attempt. A reset
+   * would clear what the customer typed and un-select their delivery and payment choices on screen.
+   */
+  function onSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    startTransition(() => formAction(data));
+  }
+
   function applyConflicts(): void {
     reconcileItems(state.conflicts.map(({ productId, unitPrice, stock }) => ({ productId, unitPrice, stock })));
     setResolved(state);
   }
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
-      <h2 className="text-xl font-semibold">Delivery details</h2>
-
+    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-8">
       {showConflicts && (
         <div role="alert" className="rounded-lg border border-amber-600 bg-amber-50 p-4 text-amber-900 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100">
           <p className="font-semibold">{state.message}</p>
@@ -82,71 +110,63 @@ export function CheckoutForm() {
         </div>
       )}
 
-      <div>
-        <label htmlFor="checkout-name" className="mb-1 block text-sm font-medium">
-          Full name
-        </label>
-        <input
-          {...fieldProps("name")}
-          type="text"
-          autoComplete="name"
-          maxLength={CHECKOUT_LIMITS.name.max}
-          defaultValue={values.name}
-          className={inputClass}
-        />
-        {error("name")}
-      </div>
+      <section aria-labelledby="delivery-details-heading" className="flex flex-col gap-5">
+        <h2 id="delivery-details-heading" className="text-xl font-semibold">Your details</h2>
+        <div>
+          <label htmlFor="checkout-name" className="mb-1 block text-sm font-medium">Full name</label>
+          <input {...fieldProps("name")} type="text" autoComplete="name" maxLength={CHECKOUT_LIMITS.name.max} defaultValue={values.name} className={inputClass} />
+          {error("name")}
+        </div>
+        <div>
+          <label htmlFor="checkout-email" className="mb-1 block text-sm font-medium">Email</label>
+          <input {...fieldProps("email")} type="email" autoComplete="email" maxLength={CHECKOUT_LIMITS.email.max} defaultValue={values.email} className={inputClass} />
+          {error("email")}
+        </div>
+        <div>
+          <label htmlFor="checkout-address" className="mb-1 block text-sm font-medium">Delivery address</label>
+          <textarea
+            {...fieldProps("address")}
+            rows={4}
+            autoComplete="street-address"
+            maxLength={CHECKOUT_LIMITS.address.max}
+            placeholder={"Street and number\nCity, postal code\nCountry"}
+            defaultValue={values.address}
+            className={inputClass}
+          />
+          {error("address")}
+        </div>
+      </section>
 
-      <div>
-        <label htmlFor="checkout-email" className="mb-1 block text-sm font-medium">
-          Email
-        </label>
-        <input
-          {...fieldProps("email")}
-          type="email"
-          autoComplete="email"
-          maxLength={CHECKOUT_LIMITS.email.max}
-          defaultValue={values.email}
-          className={inputClass}
-        />
-        {error("email")}
-      </div>
+      <ShippingOptions
+        value={props.shippingMethod}
+        onChange={props.onShippingChange}
+        standardCents={props.standardShippingCents}
+        expressCents={props.expressShippingCents}
+        freeOverCents={props.freeShippingOverCents}
+      />
 
-      <div>
-        <label htmlFor="checkout-address" className="mb-1 block text-sm font-medium">
-          Delivery address
-        </label>
-        <textarea
-          {...fieldProps("address")}
-          rows={4}
-          autoComplete="street-address"
-          maxLength={CHECKOUT_LIMITS.address.max}
-          placeholder={"Street and number\nCity, postal code\nCountry"}
-          defaultValue={values.address}
-          className={inputClass}
-        />
-        {error("address")}
-      </div>
+      <PaymentOptions method={paymentMethod} onMethodChange={setPaymentMethod} errors={errors} bankDetails={props.bankDetails} />
 
       <input type="hidden" name="items" value={cartPayload} />
-      {/* Honeypot for bots; hidden from people and assistive tech. */}
+      <input type="hidden" name="discountCode" value={props.discountCode} />
+      {/* Honeypot for bots; hidden from people and assistive tech. The odd name keeps browser autofill away. */}
       <div aria-hidden className="absolute -left-[9999px]">
-        <label htmlFor="checkout-website">Leave this empty</label>
-        <input id="checkout-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="checkout-hp">Leave this empty</label>
+        <input id="checkout-hp" name="checkout_hp_x9" type="text" tabIndex={-1} autoComplete="off" data-lpignore="true" data-1p-ignore />
       </div>
 
       <div className="flex flex-col gap-3">
         <button
           type="submit"
-          disabled={pending || state.status === "success"}
+          disabled={busy}
           className="h-12 rounded-md bg-accent px-6 font-semibold text-accent-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          {pending || state.status === "success" ? "Placing order…" : "Place order"}
+          {busy ? "Placing order…" : paymentMethod === "card" ? `Pay ${formatMoney(props.total)}` : "Place order"}
         </button>
         <p role={state.status === "error" ? "alert" : "status"} className="min-h-5 text-sm text-red-700 dark:text-red-300">
           {state.status === "error" ? state.message : ""}
         </p>
-        <p className="text-sm text-muted">Demo store: no payment is taken and no email is sent.</p>
+        <p className="text-sm text-muted">By placing your order you agree to our terms of sale and privacy policy.</p>
       </div>
     </form>
   );

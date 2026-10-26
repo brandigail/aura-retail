@@ -16,6 +16,7 @@ async function main(): Promise<void> {
       contactEmail: "hello@aura-retail.example",
       contactPhone: "+27 21 555 0142",
       address: "12 Long Street, Cape Town, 8001, South Africa",
+      bankDetails: "Account holder: Aura Retail (Pty) Ltd\nBank: Example Bank\nAccount number: 000 111 2222\nBranch code: 123456",
       announcement: "Free delivery on orders over $100. Use code WELCOME10 for 10% off your first order.",
     })
     .onConflictDoNothing();

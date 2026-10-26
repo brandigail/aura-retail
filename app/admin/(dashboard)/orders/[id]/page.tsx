@@ -9,7 +9,8 @@ import { OrderStatusForm } from "@/features/admin/orders/order-status-form";
 import { StatusBadge } from "@/features/admin/orders/status-badge";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getAdminOrder } from "@/lib/admin-order-queries";
-import { getZarRate } from "@/lib/settings";
+import { OrderTotals } from "@/features/orders/order-totals";
+import { getSettings } from "@/lib/settings";
 import { parseProductId } from "@/lib/product-id";
 
 const DATE = new Intl.DateTimeFormat("en-ZA", { dateStyle: "full", timeStyle: "short", timeZone: "Africa/Johannesburg" });
@@ -20,7 +21,8 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
   const id = parseProductId((await params).id);
   const order = id === null ? null : await getAdminOrder(id);
   if (id === null || !order) notFound();
-  const zarRate = await getZarRate();
+  const settings = await getSettings();
+  const zarRate = settings.zarPerUsdHundredths / 100;
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
@@ -45,10 +47,15 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
             </li>
           ))}
         </ul>
-        <div className="mt-3 flex items-start justify-between border-t border-border pt-3 text-lg font-bold">
-          <span>Total</span>
-          <DualPrice cents={order.total} zarRate={zarRate} className="items-end" />
-        </div>
+        <OrderTotals order={order} vatPercent={settings.vatPercent} />
+      </section>
+
+      <section aria-labelledby="payment-heading" className="rounded-lg border border-border p-5">
+        <h2 id="payment-heading" className="mb-2 text-xl font-semibold">Payment</h2>
+        <p>{order.paymentMethod ?? "Not recorded"}{order.paymentRef && <span className="text-muted"> (ref {order.paymentRef})</span>}</p>
+        {order.status === "pending" && order.paymentMethod?.startsWith("EFT") && (
+          <p className="mt-1 text-sm text-muted">Waiting for the bank transfer. Once the money arrives, mark the order as paid.</p>
+        )}
       </section>
 
       <section aria-labelledby="customer-heading" className="rounded-lg border border-border p-5">

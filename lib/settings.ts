@@ -11,6 +11,8 @@ export interface StoreSettings {
   address: string;
   /** Shown in a bar above the header; empty hides it. */
   announcement: string;
+  /** Where customers pay by bank transfer (EFT); shown after checkout and in the order email. */
+  bankDetails: string;
   vatPercent: number;
   /** Integer cents. */
   standardShippingCents: number;
@@ -28,6 +30,7 @@ const DEFAULTS: StoreSettings = {
   contactPhone: "",
   address: "",
   announcement: "",
+  bankDetails: "",
   vatPercent: 15,
   standardShippingCents: 800,
   expressShippingCents: 2000,
@@ -49,6 +52,7 @@ export async function getSettings(): Promise<StoreSettings> {
     contactPhone: row.contactPhone,
     address: row.address,
     announcement: row.announcement,
+    bankDetails: row.bankDetails,
     vatPercent: row.vatPercent,
     standardShippingCents: row.standardShippingCents,
     expressShippingCents: row.expressShippingCents,

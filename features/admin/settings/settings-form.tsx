@@ -84,6 +84,13 @@ export function SettingsForm({ settings }: { settings: StoreSettings }) {
       </fieldset>
 
       <fieldset className="flex flex-col gap-4 rounded-lg border border-border p-5">
+        <legend className="px-2 text-lg font-semibold">Bank transfer (EFT)</legend>
+        <Field id="bankDetails" label="Your bank details" hint="Customers who choose EFT see this after checkout and in their order email. Include the account holder, bank, account number and branch code." error={e.bankDetails}>
+          <textarea id="bankDetails" name="bankDetails" rows={4} defaultValue={settings.bankDetails} className={INPUT} {...aria("bankDetails")} />
+        </Field>
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-4 rounded-lg border border-border p-5">
         <legend className="px-2 text-lg font-semibold">Currency</legend>
         <Field id="zarRate" label="Rands per US dollar" hint="Used to show Rand prices next to dollar prices. Customers are charged in dollars." error={e.zarRate}>
           <input id="zarRate" name="zarRate" inputMode="decimal" defaultValue={(settings.zarPerUsdHundredths / 100).toFixed(2)} required className={`${INPUT} sm:w-40`} {...aria("zarRate")} />

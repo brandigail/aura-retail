@@ -24,7 +24,7 @@
 - [x] 19. Store settings in the admin (name, contacts, VAT, shipping rates, Rand rate, announcement bar), DB-backed and cached
 - [x] 20. Storefront redesign: announcement bar, hero, category tiles, sale and featured rows, richer footer
 - [x] 21. Info pages (About, Contact with inbox, Shipping and returns, Privacy, Terms) and admin Messages
-- [ ] 22. Checkout upgrade: shipping options, VAT line, discount codes, simulated card payment, order confirmation emails (outbox)
+- [x] 22. Checkout upgrade: shipping options, VAT line, discount codes, simulated card payment, order confirmation emails (outbox)
 - [ ] 23. Admin Discount codes and Emails outbox; order lookup (/track) by order number and email; CSV export of orders
 - [ ] 24. Wishlist, related products, review moderation, customers list
 - [ ] 25. Responsive, accessibility and SEO pass (375px, keyboard, metadata, sitemap)

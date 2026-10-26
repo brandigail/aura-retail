@@ -1,13 +1,30 @@
 import { eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { orderItems, orders, products } from "@/db/schema";
+import { discountCodes, orderItems, orders, products } from "@/db/schema";
 import type { CheckoutConflict, CheckoutLine } from "@/features/checkout/checkout-types";
+import { queueOrderEmail } from "@/lib/emails";
 import { salePrice } from "@/lib/money";
+import { priceOrder, type ShippingMethod } from "@/lib/order-pricing";
+import { getSettings } from "@/lib/settings";
 
 interface OrderCustomer {
   name: string;
   email: string;
   address: string;
+}
+
+/** Everything about an order that is not the customer's details or the items. */
+export interface OrderOptions {
+  shippingMethod: ShippingMethod;
+  /** An already-validated code, or null. */
+  discount: { code: string; percent: number } | null;
+  payment: {
+    /** Shown to the customer and the owner, e.g. "Card ending 4242 (demo)" or "EFT / bank transfer". */
+    label: string;
+    ref: string | null;
+    /** Card payments are paid at once; bank transfers wait for the money to arrive. */
+    status: "paid" | "pending";
+  };
 }
 
 export type CreateOrderResult =
@@ -65,15 +82,19 @@ async function priceLines(
 }
 
 /**
- * Creates an order and decrements stock atomically. The total is always computed from live prices.
- * The order, its items and every stock decrement run in one `db.batch` (a single transaction on Neon):
- * if any decrement would push stock below zero, the products_stock_nonneg check fails and nothing is saved.
+ * Creates an order and decrements stock atomically. Every amount is computed here from live prices and the
+ * shop's current settings; nothing the browser sends about money is trusted.
+ * The order, its items, every stock decrement and the discount-code use run in one `db.batch` (a single
+ * transaction on Neon): if any decrement would push stock below zero, or a code is already fully used, a
+ * database check fails and nothing is saved.
  */
-export async function createOrder(customer: OrderCustomer, lines: CheckoutLine[]): Promise<CreateOrderResult> {
+export async function createOrder(customer: OrderCustomer, lines: CheckoutLine[], options: OrderOptions): Promise<CreateOrderResult> {
   const { priced, conflicts } = await priceLines(lines);
   if (conflicts.length > 0) return { ok: false, conflicts };
 
-  const total = priced.reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
+  const settings = await getSettings();
+  const subtotal = priced.reduce((sum, l) => sum + l.unitPrice * l.qty, 0);
+  const pricing = priceOrder(settings, subtotal, options.shippingMethod, options.discount?.percent ?? 0);
 
   // Reserve the id up front so the items can reference it inside the same batch.
   const [{ id: orderId }] = (await db.execute(
@@ -82,11 +103,27 @@ export async function createOrder(customer: OrderCustomer, lines: CheckoutLine[]
 
   try {
     await db.batch([
-      db.insert(orders).values({ id: orderId, ...customer, total, status: "paid" }),
+      db.insert(orders).values({
+        id: orderId,
+        ...customer,
+        total: pricing.total,
+        subtotal: pricing.subtotal,
+        discountCents: pricing.discountCents,
+        discountCode: options.discount?.code ?? null,
+        shippingCents: pricing.shippingCents,
+        shippingMethod: options.shippingMethod,
+        vatCents: pricing.vatCents,
+        paymentMethod: options.payment.label,
+        paymentRef: options.payment.ref,
+        status: options.payment.status,
+      }),
       db.insert(orderItems).values(priced.map((l) => ({ orderId, ...l }))),
       ...priced.map((l) =>
         db.update(products).set({ stock: sql`${products.stock} - ${l.qty}` }).where(eq(products.id, l.productId)),
       ),
+      ...(options.discount
+        ? [db.update(discountCodes).set({ usesCount: sql`${discountCodes.usesCount} + 1` }).where(eq(discountCodes.code, options.discount.code))]
+        : []),
     ]);
   } catch (error) {
     // Most likely a concurrent buyer took the last units between our check and the write.
@@ -94,6 +131,8 @@ export async function createOrder(customer: OrderCustomer, lines: CheckoutLine[]
     if (retry.conflicts.length > 0) return { ok: false, conflicts: retry.conflicts };
     throw error;
   }
+
+  await queueOrderEmail(orderId, "order_confirmation");
 
   const [row] = await db.select({ token: orders.token }).from(orders).where(eq(orders.id, orderId));
   return { ok: true, token: row.token };

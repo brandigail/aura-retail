@@ -20,11 +20,12 @@ export interface CheckoutConflict {
 }
 
 export type CheckoutField = "name" | "email" | "address";
+export type CardField = "cardNumber" | "cardExpiry" | "cardCvc";
 
 export interface CheckoutFormState {
   status: "idle" | "error" | "conflict" | "success";
   message: string;
-  errors: Partial<Record<CheckoutField, string>>;
+  errors: Partial<Record<CheckoutField | CardField, string>>;
   values: Record<CheckoutField, string>;
   conflicts: CheckoutConflict[];
   /** Set on success; used for the confirmation URL. */

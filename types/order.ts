@@ -17,8 +17,18 @@ export interface Order {
   /** Multi-line delivery address. */
   address: string;
   items: OrderItem[];
-  /** Integer cents. */
+  /** Integer cents: subtotal - discountCents + shippingCents. */
   total: number;
+  /** Integer cents, before discount. 0 on orders placed before pricing was itemised. */
+  subtotal: number;
+  discountCents: number;
+  discountCode: string | null;
+  shippingCents: number;
+  shippingMethod: string | null;
+  /** The VAT contained in `total`. */
+  vatCents: number;
+  paymentMethod: string | null;
+  paymentRef: string | null;
   status: OrderStatus;
   /** ISO 8601 string. */
   createdAt: string;

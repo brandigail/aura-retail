@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import { requireAdmin } from "@/lib/admin-auth";
+import { queueOrderEmail } from "@/lib/emails";
 import { NEXT_STATUSES, isOrderStatus } from "./order-status";
 
 export interface OrderStatusState {
@@ -39,6 +40,9 @@ export async function updateOrderStatus(orderId: number, _previous: OrderStatusS
     } else {
       await db.update(orders).set({ status: next }).where(eq(orders.id, orderId));
     }
+
+    if (next === "shipped") await queueOrderEmail(orderId, "order_shipped");
+    if (next === "cancelled") await queueOrderEmail(orderId, "order_cancelled");
 
     revalidatePath("/admin");
     revalidatePath("/admin/orders");

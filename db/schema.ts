@@ -136,6 +136,8 @@ export const settings = pgTable("settings", {
   contactPhone: text("contact_phone").notNull().default(""),
   address: text("address").notNull().default(""),
   announcement: text("announcement").notNull().default(""),
+  /** Shown to customers who choose bank transfer (EFT). */
+  bankDetails: text("bank_details").notNull().default(""),
   vatPercent: integer("vat_percent").notNull().default(15),
   standardShippingCents: integer("standard_shipping_cents").notNull().default(800),
   expressShippingCents: integer("express_shipping_cents").notNull().default(2000),
@@ -158,7 +160,11 @@ export const discountCodes = pgTable(
     expiresAt: timestamp("expires_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [check("discount_codes_percent_range", sql`${t.percent} between 1 and 90`)],
+  (t) => [
+    check("discount_codes_percent_range", sql`${t.percent} between 1 and 90`),
+    // Makes the database refuse an order that would use a code past its limit, even if two buyers race.
+    check("discount_codes_uses_within_max", sql`${t.maxUses} is null or ${t.usesCount} <= ${t.maxUses}`),
+  ],
 );
 
 export const contactMessages = pgTable("contact_messages", {

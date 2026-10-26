@@ -28,12 +28,14 @@ export async function saveSettings(_previous: SettingsFormState, formData: FormD
   const contactPhone = text(formData, "contactPhone");
   const address = text(formData, "address");
   const announcement = text(formData, "announcement");
+  const bankDetails = text(formData, "bankDetails");
 
   if (storeName.length < 2 || storeName.length > 60) errors.storeName = "Enter a store name of 2 to 60 characters.";
   if (tagline.length > 120) errors.tagline = "Keep the tagline under 120 characters.";
   if (!EMAIL.test(contactEmail)) errors.contactEmail = "Enter a valid email address.";
   if (contactPhone.length > 30) errors.contactPhone = "That phone number is too long.";
   if (address.length > 200) errors.address = "Keep the address under 200 characters.";
+  if (bankDetails.length > 500) errors.bankDetails = "Keep the bank details under 500 characters.";
   if (announcement.length > 160) errors.announcement = "Keep the announcement under 160 characters.";
 
   const vat = Number(text(formData, "vatPercent"));
@@ -61,6 +63,7 @@ export async function saveSettings(_previous: SettingsFormState, formData: FormD
       contactPhone,
       address,
       announcement,
+      bankDetails,
       vatPercent: vat,
       standardShippingCents: standard,
       expressShippingCents: express,
