@@ -37,7 +37,7 @@ export function ProductGallery({ name, images }: ProductGalleryProps) {
                   index === selected ? "border-accent" : "border-border"
                 }`}
               >
-                <Image src={src} alt="" fill sizes="96px" className="object-cover" />
+                <Image src={src} alt="" fill sizes="96px" loading={index === 0 ? "eager" : "lazy"} className="object-cover" />
               </button>
             </li>
           ))}

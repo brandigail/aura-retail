@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { Providers } from "@/components/providers";
@@ -43,9 +42,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <Providers zarRate={settings.zarPerUsdHundredths / 100}>
           <AnnouncementBar text={settings.announcement} />
-          <Suspense fallback={<header className="sticky top-0 z-20 h-16 border-b border-border bg-background" />}>
-            <SiteHeader storeName={settings.storeName} />
-          </Suspense>
+          <SiteHeader storeName={settings.storeName} />
           <main className="flex flex-1 flex-col">{children}</main>
           <SiteFooter />
         </Providers>
