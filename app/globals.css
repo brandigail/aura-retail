@@ -11,6 +11,8 @@
   --muted: #475569;
   --accent: #008080;
   --accent-foreground: #ffffff;
+  /* Brand teal for text and links. #008080 is kept for buttons and fills; on pale backgrounds it is just under the 4.5:1 text contrast. */
+  --accent-text: #006b6b;
   color-scheme: light;
 }
 
@@ -23,6 +25,7 @@
   /* Lighter teal keeps contrast on dark surfaces; #008080 is the brand colour on light. */
   --accent: #2bb3b3;
   --accent-foreground: #04201f;
+  --accent-text: #2bb3b3;
   color-scheme: dark;
 }
 
@@ -34,6 +37,7 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-text: var(--accent-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

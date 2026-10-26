@@ -2,7 +2,7 @@ import type { OrderStatus } from "@/types/order";
 
 const STYLES: Record<OrderStatus, string> = {
   pending: "border-amber-600 text-amber-700 dark:border-amber-400 dark:text-amber-300",
-  paid: "border-accent text-accent",
+  paid: "border-accent text-accent-text",
   shipped: "border-green-700 text-green-700 dark:border-green-400 dark:text-green-300",
   cancelled: "border-red-600 text-red-700 dark:border-red-400 dark:text-red-300",
 };

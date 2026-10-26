@@ -37,7 +37,7 @@ export function PaymentOptions({ method, onMethodChange, errors, bankDetails }: 
       }`}
     >
       <input type="radio" name="payment-choice" value={id} checked={method === id} onChange={() => onMethodChange(id)} className="size-4 accent-[#008080]" />
-      <span aria-hidden className="text-accent">{icon}</span>
+      <span aria-hidden className="text-accent-text">{icon}</span>
       <span>
         <span className="block font-medium">{title}</span>
         <span className="block text-sm text-muted">{hint}</span>

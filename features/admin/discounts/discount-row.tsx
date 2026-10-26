@@ -47,7 +47,7 @@ export function DiscountRow({ row, selected, previewPercent, onToggle }: Discoun
       <td className="px-3 py-3 text-right">
         <DualPrice cents={newPrice} className="items-end" />
         {percent > 0 && (
-          <p className="mt-1 text-xs font-medium text-accent">
+          <p className="mt-1 text-xs font-medium text-accent-text">
             {previewing ? `Preview, ${percent}% off: ` : `${percent}% off: `}
             saves <Money cents={saving} />
           </p>

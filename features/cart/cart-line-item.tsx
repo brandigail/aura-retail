@@ -35,7 +35,7 @@ export function CartLineItem({ item, onNavigate }: CartLineItemProps) {
           <Link
             href={`/products/${item.productId}`}
             onClick={onNavigate}
-            className="font-medium leading-snug hover:text-accent hover:underline"
+            className="font-medium leading-snug hover:text-accent-text hover:underline"
           >
             {item.name}
           </Link>

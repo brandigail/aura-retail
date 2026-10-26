@@ -6,17 +6,18 @@ interface NotifyCustomerLinkProps {
   orderId: number;
   token: string;
   productName: string;
+  storeName: string;
 }
 
 /**
  * Opens the admin's own mail client with the message and the customer's order link filled in,
  * so the notice can be emailed without a mail service. The link needs the site origin, known only in the browser.
  */
-export function NotifyCustomerLink({ email, customerName, orderId, token, productName }: NotifyCustomerLinkProps) {
+export function NotifyCustomerLink({ email, customerName, orderId, token, productName, storeName }: NotifyCustomerLinkProps) {
   function openMail(event: React.MouseEvent<HTMLAnchorElement>): void {
     event.preventDefault();
     const link = `${window.location.origin}/orders/${token}`;
-    const subject = `Update about your Aura Retail order #${orderId}`;
+    const subject = `Update about your ${storeName} order #${orderId}`;
     const body = [
       `Hi ${customerName},`,
       "",
@@ -25,7 +26,7 @@ export function NotifyCustomerLink({ email, customerName, orderId, token, produc
       link,
       "",
       "Thank you,",
-      "Aura Retail",
+      storeName,
     ].join("\n");
     window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
@@ -34,7 +35,7 @@ export function NotifyCustomerLink({ email, customerName, orderId, token, produc
     <a
       href={`mailto:${email}`}
       onClick={openMail}
-      className="rounded text-accent underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className="rounded text-accent-text underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
       Email customer<span className="sr-only"> for order {orderId}</span>
     </a>

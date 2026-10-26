@@ -22,7 +22,7 @@ export function SiteHeader({ storeName }: { storeName: string }) {
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className={`rounded text-xl font-bold tracking-tight text-accent ${FOCUS}`}>
+        <Link href="/" className={`rounded text-xl font-bold tracking-tight text-accent-text ${FOCUS}`}>
           {storeName}
         </Link>
 
@@ -36,7 +36,7 @@ export function SiteHeader({ storeName }: { storeName: string }) {
             aria-label={ready && saved > 0 ? `Wishlist, ${saved} saved` : "Wishlist"}
             className={`relative ${ICON_BUTTON}`}
           >
-            <Heart aria-hidden className={`size-5 ${ready && saved > 0 ? "fill-accent text-accent" : ""}`} />
+            <Heart aria-hidden className={`size-5 ${ready && saved > 0 ? "fill-accent text-accent-text" : ""}`} />
             {ready && saved > 0 && (
               <span className="absolute -right-1.5 -top-1.5 flex min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs font-semibold text-accent-foreground">
                 {saved}

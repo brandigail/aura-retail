@@ -23,7 +23,7 @@ Order lookup by email, wishlist, discount codes, CSV export of orders.
 - `OrderItem { productId, name, unitPrice, qty }`
 
 ## Rules specific to this project
-- All product images live locally under `/public/products/<slug>/`. Never hotlink and never use random stock photos. The seeded products use generated SVG illustrations (`npm run images`, drawn in `scripts/illustrations/`); real photos (webp) can replace them later. See `TODO-ASSETS.md`.
+- All product images live locally under `/public/products/<slug>/` (webp, `photo-1.webp` and `photo-2.webp`). Never hotlink. The seeded products use real photographs from Pixabay (free for commercial use), downloaded once and credited in `IMAGE-CREDITS.md`; see `TODO-ASSETS.md` for the few that are only close matches.
 - `ThemeProvider` and `CartProvider` are mounted once in a client `Providers` component in `app/layout.tsx`. No localStorage reads during render. Zero hydration warnings, and no theme flash (inline theme init script).
 - `npm run seed` inserts about 60 products across 10 categories, with specs, images and a few reviews each.
 - Money is stored as integer cents; format in one helper.

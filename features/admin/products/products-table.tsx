@@ -70,7 +70,7 @@ export function ProductsTable({ rows }: { rows: readonly AdminProductRow[] }) {
                   <div className="flex flex-col items-start gap-1">
                     <Link
                       href={`/admin/products/${row.id}/edit`}
-                      className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-accent hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-accent-text hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                     >
                       <Pencil aria-hidden className="size-4" />
                       Edit<span className="sr-only"> {row.name}</span>

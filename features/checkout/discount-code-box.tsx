@@ -36,7 +36,7 @@ export function DiscountCodeBox({ applied, onChange }: DiscountCodeBoxProps) {
     return (
       <div className="flex items-center justify-between gap-3 rounded-md border border-accent bg-accent/5 px-3 py-2 text-sm">
         <span className="inline-flex items-center gap-2 font-medium">
-          <Tag aria-hidden className="size-4 text-accent" />
+          <Tag aria-hidden className="size-4 text-accent-text" />
           {applied.code} <span className="text-muted">({applied.percent}% off)</span>
         </span>
         <button

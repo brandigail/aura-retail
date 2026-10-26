@@ -64,7 +64,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <Link
                 href="/cart"
                 onClick={onClose}
-                className="text-center text-sm font-medium text-accent underline underline-offset-4"
+                className="text-center text-sm font-medium text-accent-text underline underline-offset-4"
               >
                 View full cart
               </Link>

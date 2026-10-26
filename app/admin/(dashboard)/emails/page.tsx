@@ -27,7 +27,7 @@ async function Emails() {
       ) : (
         <p role="note" className="rounded-lg border border-amber-600 bg-amber-50 p-4 text-amber-900 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100">
           <strong>No mail provider is connected yet.</strong> Messages are saved here but not delivered. Add the SMTP settings (SMTP_HOST, SMTP_USER, SMTP_PASS)
-          to the shop&apos;s environment, then use <em>Send now</em> on any message.
+          to the shop&apos;s environment (the Owner guide explains how), then use <em>Send now</em> on any message.
         </p>
       )}
       <EmailsList

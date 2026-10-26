@@ -2,8 +2,9 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { getSettings } from "@/lib/settings";
 
+// Footer and owner links are not prefetched: each prefetch is a server request, and these pages are rarely the next click.
 const linkClass =
-  "rounded text-muted hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "rounded text-muted hover:text-accent-text hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 const SHOP_LINKS = [
   { href: "/", label: "Shop all" },
@@ -27,14 +28,14 @@ export async function SiteFooter() {
     <footer className="mt-16 border-t border-border bg-surface">
       <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
-          <p className="text-lg font-bold text-accent">{s.storeName}</p>
+          <p className="text-lg font-bold text-accent-text">{s.storeName}</p>
           <p className="text-sm text-muted">{s.tagline}</p>
         </div>
         <nav aria-label="Shop" className="flex flex-col gap-2 text-sm">
           <p className="font-semibold">Shop</p>
           <ul className="flex flex-col gap-2">
             {SHOP_LINKS.map(({ href, label }) => (
-              <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>
+              <li key={href}><Link href={href} prefetch={false} className={linkClass}>{label}</Link></li>
             ))}
           </ul>
         </nav>
@@ -42,7 +43,7 @@ export async function SiteFooter() {
           <p className="font-semibold">Help</p>
           <ul className="flex flex-col gap-2">
             {HELP_LINKS.map(({ href, label }) => (
-              <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>
+              <li key={href}><Link href={href} prefetch={false} className={linkClass}>{label}</Link></li>
             ))}
           </ul>
         </nav>
@@ -71,7 +72,7 @@ export async function SiteFooter() {
           <p>
             &copy; {s.storeName}. All prices include {s.vatPercent}% VAT.
           </p>
-          <Link href="/admin" className={linkClass}>
+          <Link href="/admin" prefetch={false} className={linkClass}>
             Owner login
           </Link>
         </div>

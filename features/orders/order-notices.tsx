@@ -39,7 +39,7 @@ export function OrderNotices({ token, orderId, notices }: OrderNoticesProps) {
           </div>
         ) : (
           <p key={notice.id} className="flex items-center gap-2 text-sm text-muted">
-            <Check aria-hidden className="size-4 shrink-0 text-accent" />
+            <Check aria-hidden className="size-4 shrink-0 text-accent-text" />
             You accepted the notice that {notice.productName} is being discontinued.
           </p>
         ),

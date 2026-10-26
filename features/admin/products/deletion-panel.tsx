@@ -1,10 +1,11 @@
 import { getAffectedOrders } from "@/lib/product-deletion";
+import { getSettings } from "@/lib/settings";
 import { NotifyCustomerLink } from "./notify-customer-link";
 import { cancelDeletion } from "./product-actions";
 
 /** Shows who still has to accept the removal notice. Async: renders inside a Suspense boundary. */
 export async function DeletionPanel({ productId, productName }: { productId: number; productName: string }) {
-  const affected = await getAffectedOrders(productId);
+  const [affected, { storeName }] = await Promise.all([getAffectedOrders(productId), getSettings()]);
   const waiting = affected.filter((o) => !o.acknowledged);
 
   return (
@@ -28,6 +29,7 @@ export async function DeletionPanel({ productId, productName }: { productId: num
                   orderId={order.orderId}
                   token={order.token}
                   productName={productName}
+                  storeName={storeName}
                 />
               )}
             </li>

@@ -5,8 +5,6 @@ export const outdoorsProducts: RawSeedProduct[] = [
     name: "Trailhead Non-Slip Yoga Mat 6mm",
     price: 3299,
     stock: 48,
-    art: "yoga-mat",
-    hue: 340,
     description:
       "A cushioned, grippy yoga mat that stays put through flows, stretches and floor work. The textured surface keeps hands and feet steady, and the carry strap makes it easy to take to class.",
     specs: {
@@ -21,8 +19,6 @@ export const outdoorsProducts: RawSeedProduct[] = [
     name: "Trailhead Hex Dumbbell Pair 2 x 5kg",
     price: 5499,
     stock: 12,
-    art: "dumbbells",
-    hue: 25,
     description:
       "A pair of rubber-coated hex dumbbells that will not roll away and protect your floor. A comfortable knurled handle makes them ideal for home strength training.",
     specs: {
@@ -37,8 +33,6 @@ export const outdoorsProducts: RawSeedProduct[] = [
     name: "Trailhead Two-Person Dome Tent",
     price: 12900,
     stock: 9,
-    art: "tent",
-    hue: 95,
     description:
       "A quick-pitch dome tent for two with a full-coverage rainfly and mesh windows for airflow. It packs down small and sets up in about ten minutes.",
     specs: {
@@ -53,8 +47,6 @@ export const outdoorsProducts: RawSeedProduct[] = [
     name: "Trailhead Insulated Steel Water Bottle 750ml",
     price: 2699,
     stock: 77,
-    art: "water-bottle",
-    hue: 145,
     description:
       "A double-wall stainless-steel bottle that keeps drinks cold for 24 hours or hot for 12. The leak-proof cap and carry loop make it perfect for trails, gyms and commutes.",
     specs: {
@@ -69,8 +61,6 @@ export const outdoorsProducts: RawSeedProduct[] = [
     name: "Trail 35L Hiking Backpack",
     price: 8999,
     stock: 14,
-    art: "backpack",
-    hue: 170,
     description:
       "A comfortable 35 litre daypack with a ventilated back panel, padded straps and plenty of pockets. Includes a rain cover and a sleeve for a hydration bladder.",
     specs: {
@@ -85,8 +75,6 @@ export const outdoorsProducts: RawSeedProduct[] = [
     name: "Trailhead Road Cycling Helmet",
     price: 6499,
     stock: 21,
-    art: "helmet",
-    hue: 215,
     description:
       "A lightweight, well-ventilated cycling helmet with an easy-adjust fit dial and a removable visor. The in-mould shell absorbs impacts while keeping you cool on climbs.",
     specs: {

@@ -5,6 +5,7 @@ import { catalogHref } from "@/features/catalog/catalog-params";
 import { WishlistButton } from "@/features/wishlist/wishlist-button";
 import { getProductImages, getStockStatus, stockLabel } from "@/lib/product-display";
 import { parseProductId } from "@/lib/product-id";
+import { productJsonLd } from "@/lib/structured-data";
 import { getProductById, getReviewsForProduct } from "@/lib/product-queries";
 import { AddToCart } from "./add-to-cart";
 import { ProductGallery } from "./product-gallery";
@@ -35,10 +36,14 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
 
   return (
     <article className="flex flex-col gap-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: productJsonLd(product, process.env.SITE_URL ?? "http://localhost:3000", summary) }}
+      />
       <nav aria-label="Breadcrumb" className="text-sm text-muted">
         <ol className="flex flex-wrap items-center gap-x-2">
           <li>
-            <Link href="/" className="hover:text-accent hover:underline">
+            <Link href="/" className="hover:text-accent-text hover:underline">
               Shop
             </Link>
           </li>
@@ -46,7 +51,7 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
           <li>
             <Link
               href={catalogHref({ category: product.category, q: "", sort: "featured" })}
-              className="hover:text-accent hover:underline"
+              className="hover:text-accent-text hover:underline"
             >
               {product.category}
             </Link>
@@ -61,7 +66,7 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
             <p className="text-sm font-medium uppercase tracking-wide text-muted">{product.category}</p>
             <h1 className="mt-1 text-3xl font-bold leading-tight tracking-tight">{product.name}</h1>
             {summary.average !== null && (
-              <a href="#reviews" className="mt-2 inline-block text-sm text-muted hover:text-accent hover:underline">
+              <a href="#reviews" className="mt-2 inline-block text-sm text-muted hover:text-accent-text hover:underline">
                 ★ {summary.average.toFixed(1)} · {summary.count} {summary.count === 1 ? "review" : "reviews"}
               </a>
             )}

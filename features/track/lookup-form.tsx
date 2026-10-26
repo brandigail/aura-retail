@@ -35,7 +35,7 @@ export function LookupForm() {
         {state.status === "error" && <p className="text-red-700 dark:text-red-300">{state.message}</p>}
         {state.status === "sent" && (
           <>
-            <p className="font-medium text-accent">{state.message}</p>
+            <p className="font-medium text-accent-text">{state.message}</p>
             {!state.delivered && (
               <p className="mt-1 text-muted">Demo store: no mail provider is connected, so the message is kept in the owner&apos;s Emails inbox instead of being sent.</p>
             )}

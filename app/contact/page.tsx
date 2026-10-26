@@ -18,23 +18,23 @@ export default async function ContactPage() {
         <aside aria-label="Our details" className="flex h-fit flex-col gap-4 rounded-xl border border-border bg-surface p-6">
           <h2 className="text-xl font-bold">Our details</h2>
           <p className="flex items-start gap-3">
-            <Mail aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
+            <Mail aria-hidden className="mt-0.5 size-5 shrink-0 text-accent-text" />
             <a href={`mailto:${s.contactEmail}`} className="underline underline-offset-4">{s.contactEmail}</a>
           </p>
           {s.contactPhone && (
             <p className="flex items-start gap-3">
-              <Phone aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
+              <Phone aria-hidden className="mt-0.5 size-5 shrink-0 text-accent-text" />
               <a href={`tel:${s.contactPhone.replace(/\s/g, "")}`} className="underline underline-offset-4">{s.contactPhone}</a>
             </p>
           )}
           {s.address && (
             <p className="flex items-start gap-3">
-              <MapPin aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
+              <MapPin aria-hidden className="mt-0.5 size-5 shrink-0 text-accent-text" />
               {s.address}
             </p>
           )}
           <p className="flex items-start gap-3 text-muted">
-            <Clock aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
+            <Clock aria-hidden className="mt-0.5 size-5 shrink-0 text-accent-text" />
             Monday to Friday, 08:00 to 17:00 (SAST)
           </p>
         </aside>

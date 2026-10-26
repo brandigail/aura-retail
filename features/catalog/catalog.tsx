@@ -35,7 +35,7 @@ export async function Catalog({ searchParams }: CatalogProps) {
           <p className="text-lg font-semibold">No products found</p>
           <p className="mt-1 text-muted">Try a different search term or category.</p>
           {isFiltered && (
-            <Link href="/" className="mt-4 inline-block font-medium text-accent underline underline-offset-4">
+            <Link href="/" className="mt-4 inline-block font-medium text-accent-text underline underline-offset-4">
               Clear all filters
             </Link>
           )}

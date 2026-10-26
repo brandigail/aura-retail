@@ -21,8 +21,10 @@ const geistMono = Geist_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const { storeName, tagline } = await getSettings();
   return {
+    metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
     title: { default: storeName, template: `%s | ${storeName}` },
     description: tagline,
+    openGraph: { siteName: storeName, type: "website" },
   };
 }
 
@@ -40,10 +42,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:font-semibold focus:text-accent-foreground"
+        >
+          Skip to main content
+        </a>
         <Providers zarRate={settings.zarPerUsdHundredths / 100}>
           <AnnouncementBar text={settings.announcement} />
           <SiteHeader storeName={settings.storeName} />
-          <main className="flex flex-1 flex-col">{children}</main>
+          <main id="main" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">{children}</main>
           <SiteFooter />
         </Providers>
       </body>

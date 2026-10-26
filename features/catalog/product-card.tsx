@@ -37,7 +37,7 @@ export function ProductCard({ product, priority = false }: { product: ProductSum
         </div>
         <div className="flex flex-1 flex-col gap-2 p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-muted">{product.category}</p>
-          <h2 className="text-base font-semibold leading-snug group-hover:text-accent">{product.name}</h2>
+          <h2 className="text-base font-semibold leading-snug group-hover:text-accent-text">{product.name}</h2>
           <p className="flex items-center gap-1 text-sm text-muted">
             {product.ratingAvg !== null ? (
               <>

@@ -52,7 +52,7 @@ async function Reviews() {
                   </p>
                   <p className="text-sm text-muted">
                     {r.author} · {DATE.format(r.createdAt)} · on{" "}
-                    <Link href={`/products/${r.productId}`} className="text-accent hover:underline">{r.productName}</Link>
+                    <Link href={`/products/${r.productId}`} className="text-accent-text underline underline-offset-4 hover:no-underline">{r.productName}</Link>
                   </p>
                 </div>
                 <form action={deleteReview.bind(null, r.id, r.productId)}>

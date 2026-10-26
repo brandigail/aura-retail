@@ -31,7 +31,7 @@ function WishlistCard({ product, priority }: { product: WishlistProduct; priorit
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-muted">{product.category}</p>
           <h2 className="text-lg font-semibold leading-snug">
-            <Link href={`/products/${product.id}`} className={`rounded hover:text-accent hover:underline ${FOCUS}`}>{product.name}</Link>
+            <Link href={`/products/${product.id}`} className={`rounded hover:text-accent-text hover:underline ${FOCUS}`}>{product.name}</Link>
           </h2>
         </div>
         <Price price={product.price} discountPercent={product.discountPercent} />

@@ -18,7 +18,7 @@ interface OrderSummaryProps {
 
 function Row({ label, children, strong = false }: { label: string; children: React.ReactNode; strong?: boolean }) {
   return (
-    <div className={`flex items-start justify-between gap-3 ${strong ? "text-lg font-bold" : "text-sm"}`}>
+    <div className={`flex items-start justify-between gap-3 ${strong ? "border-t border-border pt-3 text-lg font-bold" : "text-sm"}`}>
       <dt className={strong ? "" : "text-muted"}>{label}</dt>
       <dd className="text-right">{children}</dd>
     </div>
@@ -45,24 +45,26 @@ export function OrderSummary({ pricing, vatPercent, shippingLabel, discount, onD
 
       <DiscountCodeBox applied={discount} onChange={onDiscountChange} />
 
-      <dl className="flex flex-col gap-2 border-t border-border pt-3">
-        <Row label={`Subtotal (${count} ${count === 1 ? "item" : "items"})`}><Money cents={pricing.subtotal} /></Row>
-        {pricing.discountCents > 0 && (
-          <Row label={`Discount${discount ? ` (${discount.code})` : ""}`}>
-            <span className="text-accent">-<Money cents={pricing.discountCents} /></span>
+      <div className="flex flex-col gap-2 border-t border-border pt-3">
+        <dl className="flex flex-col gap-2">
+          <Row label={`Subtotal (${count} ${count === 1 ? "item" : "items"})`}><Money cents={pricing.subtotal} /></Row>
+          {pricing.discountCents > 0 && (
+            <Row label={`Discount${discount ? ` (${discount.code})` : ""}`}>
+              <span className="text-accent-text">-<Money cents={pricing.discountCents} /></span>
+            </Row>
+          )}
+          <Row label={`Delivery (${shippingLabel})`}>
+            {pricing.shippingCents === 0 ? <span className="font-medium text-accent-text">Free</span> : <Money cents={pricing.shippingCents} />}
           </Row>
-        )}
-        <Row label={`Delivery (${shippingLabel})`}>{pricing.shippingCents === 0 ? <span className="font-medium text-accent">Free</span> : <Money cents={pricing.shippingCents} />}</Row>
-        <div className="border-t border-border pt-3">
           <Row label="Total" strong><Money cents={pricing.total} stacked className="items-end" /></Row>
-        </div>
+        </dl>
         {mode === "zar" && (
           <p className="rounded-md bg-surface p-2 text-sm font-medium">You will be charged {formatMoney(pricing.total)} in US dollars. The Rand amount is a guide.</p>
         )}
         <p className="text-xs text-muted">Includes {vatPercent}% VAT of <Money cents={pricing.vatCents} />. Charged in US dollars; Rand amounts are approximate.</p>
-      </dl>
+      </div>
 
-      <Link href="/cart" className="text-sm text-accent underline underline-offset-4">Edit cart</Link>
+      <Link href="/cart" className="text-sm text-accent-text underline underline-offset-4">Edit cart</Link>
     </aside>
   );
 }

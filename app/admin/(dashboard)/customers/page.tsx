@@ -35,7 +35,7 @@ async function Customers() {
                 <tr key={c.email} className="border-t border-border align-top">
                   <td className="px-3 py-3">
                     <p className="font-medium">{c.name}</p>
-                    <a href={`mailto:${c.email}`} className="text-accent hover:underline">{c.email}</a>
+                    <a href={`mailto:${c.email}`} className="text-accent-text hover:underline">{c.email}</a>
                   </td>
                   <td className="px-3 py-3 text-right">{c.orderCount}</td>
                   <td className="px-3 py-3 text-right"><DualPrice cents={c.spent} className="items-end" /></td>

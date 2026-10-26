@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { LoginForm } from "@/features/admin/login-form";
 import { isAdmin } from "@/lib/admin-auth";
 
-export const metadata: Metadata = { title: "Admin sign in | Aura Retail", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Admin sign in", robots: { index: false, follow: false } };
 
 async function RedirectIfSignedIn() {
   if (await isAdmin()) redirect("/admin");

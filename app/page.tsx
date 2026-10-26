@@ -8,8 +8,13 @@ type RawParams = Record<string, string | string[] | undefined>;
 /** The storefront intro is only for the plain home page; any search or filter goes straight to results. */
 async function Intro({ searchParams }: { searchParams: Promise<RawParams> }) {
   const raw = await searchParams;
-  if (raw.category || raw.q || raw.sort) return null;
-  return <HomeIntro />;
+  const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value) ?? "";
+  if (!raw.category && !raw.q && !raw.sort) return <HomeIntro />;
+
+  const category = first(raw.category);
+  const q = first(raw.q).trim().slice(0, 80);
+  const title = q ? `Search results for “${q}”` : category || "Shop";
+  return <h1 className="text-4xl font-extrabold tracking-tight">{title}</h1>;
 }
 
 export default function Home({ searchParams }: PageProps<"/">) {

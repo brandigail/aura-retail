@@ -14,10 +14,10 @@
 - [x] 12. Admin products: create, edit, delete, image path field
 - [x] 13. Admin stock adjustments and low-stock list
 - [x] 14. Admin orders list and analytics (revenue, orders per day)
-- [ ] 15. Responsive pass at 375px, accessibility pass, empty and error states
-- [ ] 16. `npm run build`, lint and `tsc --noEmit` clean; no console errors
-- [ ] 17. README (pitch, features, stack, architecture, recruiter demo bullets, screenshots)
-- [ ] 18. Deploy to Netlify, set env vars, test live; push to GitHub; update root `LINKS.md`
+- [x] 15. Responsive pass at 375px, accessibility pass, empty and error states
+- [x] 16. `npm run build`, lint and `tsc --noEmit` clean; no console errors
+- [x] 17. README (pitch, features, stack, architecture, recruiter demo bullets, screenshots)
+- [ ] 18. Deploy to Netlify, set env vars, test live; push to GitHub; update root `LINKS.md` (WAITING: only on the owner's explicit go-ahead; nothing is pushed or deployed without asking first)
 
 ## Owner-ready phase (added: the store must be complete enough to hand to a real shop owner)
 
@@ -27,5 +27,5 @@
 - [x] 22. Checkout upgrade: shipping options, VAT line, discount codes, simulated card payment, order confirmation emails (outbox)
 - [x] 23. Admin Discount codes and Emails outbox; order lookup (/track) by order number and email; CSV export of orders
 - [x] 24. Wishlist, related products, review moderation, customers list
-- [ ] 25. Responsive, accessibility and SEO pass (375px, keyboard, metadata, sitemap)
-- [ ] 26. Owner guide page in the admin (how to run the shop) and Phase 2 production notes (payments, email, domain)
+- [x] 25. Responsive, accessibility and SEO pass (375px, keyboard, metadata, sitemap)
+- [x] 26. Owner guide page in the admin (how to run the shop) and Phase 2 production notes (payments, email, domain)

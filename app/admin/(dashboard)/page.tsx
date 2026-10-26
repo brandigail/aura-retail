@@ -60,7 +60,7 @@ async function Dashboard() {
       <section aria-labelledby="sales-heading" className="rounded-lg border border-border p-5">
         <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
           <h2 id="sales-heading" className="text-xl font-semibold">Sales, last {SALES_DAYS} days</h2>
-          <Link href="/admin/orders" className="text-accent hover:underline">View all orders</Link>
+          <Link href="/admin/orders" className="text-accent-text hover:underline">View all orders</Link>
         </div>
         <SalesChart daily={stats.daily} />
       </section>
@@ -89,7 +89,7 @@ async function Dashboard() {
         <section aria-labelledby="low-stock-heading" className="flex flex-col gap-3">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="low-stock-heading" className="text-xl font-semibold">Low stock</h2>
-            <Link href="/admin/stock" className="text-accent hover:underline">Manage stock</Link>
+            <Link href="/admin/stock" className="text-accent-text hover:underline">Manage stock</Link>
           </div>
           {lowStock.length === 0 ? (
             <p className="rounded-lg border border-dashed border-border p-6 text-center text-muted">Everything is well stocked.</p>

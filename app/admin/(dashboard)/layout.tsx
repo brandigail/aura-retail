@@ -4,7 +4,7 @@ import { AdminNav } from "@/features/admin/admin-nav";
 import { logout } from "@/features/admin/admin-actions";
 import { requireAdmin } from "@/lib/admin-auth";
 
-export const metadata: Metadata = { title: "Admin | Aura Retail", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Admin", robots: { index: false, follow: false } };
 
 /** Reads the session cookie, so it must render inside <Suspense>. */
 async function AdminGate({ children }: { children: ReactNode }) {

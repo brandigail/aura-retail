@@ -5,8 +5,6 @@ export const stationeryProducts: RawSeedProduct[] = [
     name: "Inkwell A5 Hardcover Notebook, Dotted",
     price: 1450,
     stock: 120,
-    art: "notebook",
-    hue: 30,
     description:
       "A hardcover A5 notebook with 192 pages of thick, ink-friendly dotted paper. It has an elastic closure, a ribbon bookmark and a pocket at the back.",
     specs: {
@@ -21,8 +19,6 @@ export const stationeryProducts: RawSeedProduct[] = [
     name: "Inkwell Fountain Pen with Ink Converter",
     price: 2800,
     stock: 25,
-    art: "fountain-pen",
-    hue: 220,
     description:
       "A smooth-writing fountain pen with a stainless steel nib and a comfortable weighted barrel. Comes with an ink converter and two cartridges to get started.",
     specs: {
@@ -37,8 +33,6 @@ export const stationeryProducts: RawSeedProduct[] = [
     name: "Inkwell Coloured Pencil Set, 36 Colours",
     price: 1999,
     stock: 48,
-    art: "pencil-set",
-    hue: 130,
     description:
       "Thirty-six richly pigmented coloured pencils with soft, blendable cores in a handy tin. Great for sketching, colouring and detailed illustration.",
     specs: {
@@ -53,8 +47,6 @@ export const stationeryProducts: RawSeedProduct[] = [
     name: "Inkwell Mesh Desk Organiser",
     price: 2299,
     stock: 30,
-    art: "desk-organiser",
-    hue: 175,
     description:
       "A tidy three-compartment desk organiser for pens, notes and small supplies. The sturdy metal mesh has a rubber base so it will not scratch your desk.",
     specs: {
@@ -69,8 +61,6 @@ export const stationeryProducts: RawSeedProduct[] = [
     name: "Inkwell Pastel Highlighters (4 pcs)",
     price: 899,
     stock: 140,
-    art: "highlighters",
-    hue: 200,
     description:
       "Four soft pastel highlighters that mark text without bleeding through the page. A chisel tip gives both broad strokes and fine underlines.",
     specs: {
@@ -85,8 +75,6 @@ export const stationeryProducts: RawSeedProduct[] = [
     name: "Inkwell Sticky Notes Variety Pack",
     price: 1199,
     stock: 95,
-    art: "sticky-notes",
-    hue: 320,
     description:
       "Twelve pads of bright, repositionable sticky notes in assorted sizes and colours. They stick firmly, peel off cleanly and keep your reminders where you need them.",
     specs: {

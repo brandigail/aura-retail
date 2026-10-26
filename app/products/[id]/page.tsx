@@ -9,9 +9,15 @@ export async function generateMetadata({ params }: PageProps<"/products/[id]">):
   const { id } = await params;
   const productId = parseProductId(id);
   const product = productId === null ? null : await getProductById(productId);
-  return product
-    ? { title: `${product.name} | Aura Retail`, description: product.description }
-    : { title: "Product not found | Aura Retail" };
+  if (!product) return { title: "Product not found", robots: { index: false } };
+  const description = product.description.length > 160 ? `${product.description.slice(0, 157)}...` : product.description;
+  const [image] = product.images;
+  return {
+    title: product.name,
+    description,
+    alternates: { canonical: `/products/${product.id}` },
+    openGraph: { title: product.name, description, type: "website", ...(image ? { images: [{ url: image, alt: product.name }] } : {}) },
+  };
 }
 
 export default function ProductPage({ params }: PageProps<"/products/[id]">) {

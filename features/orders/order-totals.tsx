@@ -17,17 +17,18 @@ export function OrderTotals({ order, vatPercent }: { order: Order; vatPercent: n
   const itemised = order.subtotal > 0;
 
   return (
-    <dl className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
+    <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
+      <dl className="flex flex-col gap-2">
       {itemised && (
         <>
           <Row label="Subtotal"><Money cents={order.subtotal} /></Row>
           {order.discountCents > 0 && (
             <Row label={`Discount${order.discountCode ? ` (${order.discountCode})` : ""}`}>
-              <span className="text-accent">-<Money cents={order.discountCents} /></span>
+              <span className="text-accent-text">-<Money cents={order.discountCents} /></span>
             </Row>
           )}
           <Row label={SHIPPING_NAMES[order.shippingMethod ?? ""] ?? "Delivery"}>
-            {order.shippingCents === 0 ? <span className="font-medium text-accent">Free</span> : <Money cents={order.shippingCents} />}
+            {order.shippingCents === 0 ? <span className="font-medium text-accent-text">Free</span> : <Money cents={order.shippingCents} />}
           </Row>
         </>
       )}
@@ -35,9 +36,10 @@ export function OrderTotals({ order, vatPercent }: { order: Order; vatPercent: n
         <dt>Total</dt>
         <dd className="text-right"><Money cents={order.total} stacked className="items-end" /></dd>
       </div>
+      </dl>
       {order.vatCents > 0 && (
         <p className="text-xs text-muted">Includes {vatPercent}% VAT of <Money cents={order.vatCents} />.</p>
       )}
-    </dl>
+    </div>
   );
 }

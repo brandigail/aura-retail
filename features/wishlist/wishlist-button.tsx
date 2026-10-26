@@ -16,7 +16,7 @@ const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visi
 export function WishlistButton({ productId, productName, variant = "icon" }: WishlistButtonProps) {
   const ids = useSyncExternalStore(subscribeWishlist, getWishlistSnapshot, getWishlistServerSnapshot);
   const saved = ids.includes(productId);
-  const heart = <Heart aria-hidden className={`size-5 ${saved ? "fill-accent text-accent" : ""}`} />;
+  const heart = <Heart aria-hidden className={`size-5 ${saved ? "fill-accent text-accent-text" : ""}`} />;
 
   if (variant === "labelled") {
     return (

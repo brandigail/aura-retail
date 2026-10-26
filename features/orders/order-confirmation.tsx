@@ -24,7 +24,7 @@ export async function OrderConfirmation({ params }: { params: Promise<{ token: s
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <RememberOrder token={order.token} />
       <div className="flex flex-col items-center gap-2 text-center">
-        {awaitingEft ? <Clock aria-hidden className="size-12 text-amber-600" /> : <CheckCircle2 aria-hidden className="size-12 text-accent" />}
+        {awaitingEft ? <Clock aria-hidden className="size-12 text-amber-600" /> : <CheckCircle2 aria-hidden className="size-12 text-accent-text" />}
         <h1 className="text-3xl font-bold tracking-tight">Thank you, {order.name.split(" ")[0]}!</h1>
         <p className="text-muted">
           Order #{order.id} was placed on {dateFormat.format(new Date(order.createdAt))}.

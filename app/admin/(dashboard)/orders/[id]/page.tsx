@@ -25,7 +25,7 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <Link href="/admin/orders" className="inline-flex items-center gap-1 text-sm text-accent hover:underline">
+      <Link href="/admin/orders" className="inline-flex items-center gap-1 text-sm text-accent-text hover:underline">
         <ArrowLeft aria-hidden className="size-4" /> All orders
       </Link>
       <div className="flex flex-wrap items-center gap-3">
@@ -60,7 +60,7 @@ async function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
       <section aria-labelledby="customer-heading" className="rounded-lg border border-border p-5">
         <h2 id="customer-heading" className="mb-2 text-xl font-semibold">Customer</h2>
         <p className="font-medium">{order.name}</p>
-        <a href={`mailto:${order.email}`} className="text-accent hover:underline">{order.email}</a>
+        <a href={`mailto:${order.email}`} className="text-accent-text hover:underline">{order.email}</a>
         <p className="mt-2 whitespace-pre-line text-muted">{order.address}</p>
       </section>
 

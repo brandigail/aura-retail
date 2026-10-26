@@ -5,8 +5,6 @@ export const swimProducts: RawSeedProduct[] = [
     name: "Splashline Anti-Fog Swim Goggles",
     price: 1699,
     stock: 85,
-    art: "goggles",
-    hue: 190,
     description:
       "Comfortable swim goggles with an anti-fog coating and UV protection. The soft silicone seal keeps water out, and the adjustable strap suits adults and teens.",
     specs: {
@@ -21,8 +19,6 @@ export const swimProducts: RawSeedProduct[] = [
     name: "Splashline Silicone Swim Cap",
     price: 1199,
     stock: 70,
-    art: "swim-cap",
-    hue: 175,
     description:
       "A durable, stretchy silicone cap that keeps hair out of your face and cuts drag in the water. It slips on easily and is gentle enough to avoid pulling hair.",
     specs: {
@@ -37,8 +33,6 @@ export const swimProducts: RawSeedProduct[] = [
     name: "Splashline Foam Kickboard Training Float",
     price: 1999,
     stock: 29,
-    art: "kickboard",
-    hue: 220,
     description:
       "A buoyant EVA foam kickboard with a contoured grip for leg drills and technique work. It is light, durable and floats high so you can focus on your kick.",
     specs: {
@@ -53,8 +47,6 @@ export const swimProducts: RawSeedProduct[] = [
     name: "Splashline Short Blade Training Fins",
     price: 3499,
     stock: 17,
-    art: "fins",
-    hue: 310,
     description:
       "Short-blade fins that build leg strength and improve kick technique without strain on the knees. The soft foot pockets and rails give a natural, powerful push.",
     specs: {
@@ -69,8 +61,6 @@ export const swimProducts: RawSeedProduct[] = [
     name: "Splashline Inflatable Pool Float Ring 1.2m",
     price: 1850,
     stock: 36,
-    art: "float-ring",
-    hue: 330,
     description:
       "A bright, striped inflatable ring for lazy afternoons in the pool or at the beach. Made of thick, puncture-resistant vinyl with a safety valve for quick inflating.",
     specs: {
@@ -85,8 +75,6 @@ export const swimProducts: RawSeedProduct[] = [
     name: "Splashline Quick-Dry Microfibre Beach Towel",
     price: 2700,
     stock: 44,
-    art: "beach-towel",
-    hue: 15,
     description:
       "A big, absorbent beach towel that dries in a fraction of the time of cotton and shakes the sand right off. Folds down small enough to throw in a bag.",
     specs: {

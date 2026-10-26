@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { OrderConfirmation } from "@/features/orders/order-confirmation";
 
 // Order pages hold personal details and are reachable only by their unguessable link.
-export const metadata: Metadata = { title: "Order confirmation | Aura Retail", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Order confirmation", robots: { index: false, follow: false } };
 
 export default function OrderPage({ params }: PageProps<"/orders/[token]">) {
   return (

@@ -28,7 +28,7 @@ export function OrdersTable({ rows }: { rows: readonly AdminOrderRow[] }) {
           {rows.map((row) => (
             <tr key={row.id} className="border-t border-border align-top">
               <td className="px-3 py-3">
-                <Link href={`/admin/orders/${row.id}`} className="font-semibold text-accent hover:underline">
+                <Link href={`/admin/orders/${row.id}`} className="font-semibold text-accent-text hover:underline">
                   #{row.id}
                 </Link>
               </td>

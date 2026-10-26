@@ -48,7 +48,7 @@ export function CodeForm() {
           {pending ? "Saving…" : "Create code"}
         </button>
         {state.message && (
-          <p role={state.status === "error" ? "alert" : "status"} className={state.status === "error" ? "text-red-700 dark:text-red-300" : "font-medium text-accent"}>
+          <p role={state.status === "error" ? "alert" : "status"} className={state.status === "error" ? "text-red-700 dark:text-red-300" : "font-medium text-accent-text"}>
             {state.message}
           </p>
         )}

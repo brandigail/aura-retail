@@ -28,13 +28,13 @@ export function MessagesList({ rows }: { rows: readonly MessageRow[] }) {
               <p className="font-semibold">
                 {m.name} {!m.read && <span className="ml-2 rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground">New</span>}
               </p>
-              <a href={`mailto:${m.email}?subject=Re: your message`} className="text-sm text-accent hover:underline">{m.email}</a>
+              <a href={`mailto:${m.email}?subject=Re: your message`} className="text-sm text-accent-text hover:underline">{m.email}</a>
             </div>
             <p className="text-sm text-muted">{DATE.format(new Date(m.createdAt))}</p>
           </div>
           <p className="mt-3 whitespace-pre-line">{m.message}</p>
           <div className="mt-3 flex flex-wrap gap-1">
-            <a href={`mailto:${m.email}?subject=Re: your message`} className={`${ACTION} text-accent`}>
+            <a href={`mailto:${m.email}?subject=Re: your message`} className={`${ACTION} text-accent-text`}>
               <Mail aria-hidden className="size-4" /> Reply by email
             </a>
             <form action={setMessageRead.bind(null, m.id, !m.read)}>

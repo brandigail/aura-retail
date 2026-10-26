@@ -16,7 +16,7 @@ function ProductRow({ id, title, href, linkLabel, items }: { id: string; title: 
       <div className="flex items-baseline justify-between gap-3">
         <h2 id={id} className="text-2xl font-bold tracking-tight">{title}</h2>
         {href && linkLabel && (
-          <Link href={href} className={`inline-flex items-center gap-1 rounded text-sm font-medium text-accent hover:underline ${FOCUS}`}>
+          <Link href={href} className={`inline-flex items-center gap-1 rounded text-sm font-medium text-accent-text hover:underline ${FOCUS}`}>
             {linkLabel} <ArrowRight aria-hidden className="size-4" />
           </Link>
         )}
@@ -52,7 +52,7 @@ export async function HomeIntro() {
       <section aria-labelledby="hero-heading" className="overflow-hidden rounded-2xl bg-gradient-to-br from-accent/15 via-surface to-surface">
         <div className="grid items-center gap-8 p-6 sm:p-10 lg:grid-cols-[1.1fr_1fr]">
           <div className="flex flex-col gap-5">
-            <p className="text-sm font-semibold uppercase tracking-widest text-accent">Welcome to {settings.storeName}</p>
+            <p className="text-sm font-semibold uppercase tracking-widest text-accent-text">Welcome to {settings.storeName}</p>
             <h1 id="hero-heading" className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
               {settings.tagline}
             </h1>
@@ -85,7 +85,7 @@ export async function HomeIntro() {
       <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {trust.map(({ key, icon: Icon, title, text }) => (
           <li key={key} className="flex items-start gap-3 rounded-lg border border-border p-4">
-            <Icon aria-hidden className="mt-0.5 size-6 shrink-0 text-accent" />
+            <Icon aria-hidden className="mt-0.5 size-6 shrink-0 text-accent-text" />
             <div>
               <p className="text-sm font-semibold">{title}</p>
               <p className="text-sm text-muted">{text}</p>

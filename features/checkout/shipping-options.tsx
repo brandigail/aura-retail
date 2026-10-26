@@ -39,7 +39,7 @@ export function ShippingOptions({ value, onChange, standardCents, expressCents, 
             </span>
           </span>
           <span className="text-right font-semibold">
-            {option.cents === 0 ? <span className="text-accent">Free</span> : <Money cents={option.cents} stacked className="items-end" />}
+            {option.cents === 0 ? <span className="text-accent-text">Free</span> : <Money cents={option.cents} stacked className="items-end" />}
           </span>
         </label>
       ))}

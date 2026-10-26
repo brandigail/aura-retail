@@ -15,6 +15,7 @@ const LINKS = [
   { href: "/admin/discounts", label: "Sales", exact: false },
   { href: "/admin/codes", label: "Codes", exact: false },
   { href: "/admin/settings", label: "Settings", exact: false },
+  { href: "/admin/guide", label: "Guide", exact: false },
   { href: "/", label: "View store", exact: true },
 ] as const;
 
@@ -27,12 +28,13 @@ export function AdminNav() {
         const active = href !== "/" && (exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`));
         return (
           <Link
+            prefetch={false}
             key={href}
             href={href}
             aria-current={active ? "page" : undefined}
             className={
               active
-                ? "border-b-2 border-accent py-1 text-accent"
+                ? "border-b-2 border-accent py-1 text-accent-text"
                 : "border-b-2 border-transparent py-1 text-muted hover:text-foreground hover:underline"
             }
           >

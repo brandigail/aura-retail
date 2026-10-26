@@ -31,7 +31,7 @@ function NavList({ pathname, layout, onNavigate }: NavListProps) {
               href={href}
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
-              className={`block rounded px-2 font-medium ${layout === "stack" ? "py-2.5" : "py-1.5"} ${FOCUS} ${active ? "text-accent" : "text-muted hover:text-foreground"}`}
+              className={`block rounded px-2 font-medium ${layout === "stack" ? "py-2.5" : "py-1.5"} ${FOCUS} ${active ? "text-accent-text" : "text-muted hover:text-foreground"}`}
             >
               {label}
             </Link>

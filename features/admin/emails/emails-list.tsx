@@ -56,7 +56,7 @@ export function EmailsList({ rows }: { rows: readonly EmailRow[] }) {
                 {/* One stable button, so its confirmation message survives the list refreshing when the status flips to Sent. */}
                 <ResendButton id={m.id} label={m.status === "sent" ? "Send again" : "Send now"} />
                 {m.orderId !== null && (
-                  <Link href={`/admin/orders/${m.orderId}`} className="py-1.5 text-sm text-accent hover:underline">
+                  <Link href={`/admin/orders/${m.orderId}`} className="py-1.5 text-sm text-accent-text hover:underline">
                     View order #{m.orderId}
                   </Link>
                 )}
