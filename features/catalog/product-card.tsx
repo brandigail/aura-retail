@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { Price } from "@/components/price";
+import { WishlistButton } from "@/features/wishlist/wishlist-button";
 import { getProductImages, getStockStatus, stockLabel, type StockStatus } from "@/lib/product-display";
 import type { ProductSummary } from "@/types/product";
 
@@ -16,7 +17,10 @@ export function ProductCard({ product, priority = false }: { product: ProductSum
   const [image] = getProductImages(product);
 
   return (
-    <li>
+    <li className="relative">
+      <div className="absolute right-2 top-2 z-10">
+        <WishlistButton productId={product.id} productName={product.name} />
+      </div>
       <Link
         href={`/products/${product.id}`}
         className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-background transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"

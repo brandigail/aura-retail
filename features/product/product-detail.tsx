@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Price } from "@/components/price";
 import { catalogHref } from "@/features/catalog/catalog-params";
+import { WishlistButton } from "@/features/wishlist/wishlist-button";
 import { getProductImages, getStockStatus, stockLabel } from "@/lib/product-display";
 import { parseProductId } from "@/lib/product-id";
 import { getProductById, getReviewsForProduct } from "@/lib/product-queries";
@@ -68,6 +69,9 @@ export async function ProductDetail({ params }: { params: Promise<{ id: string }
           <p className={`font-medium ${STOCK_TEXT[status]}`}>{stockLabel(product.stock)}</p>
           <p className="leading-relaxed text-muted">{product.description}</p>
           <AddToCart product={product} />
+          <div>
+            <WishlistButton productId={product.id} productName={product.name} variant="labelled" />
+          </div>
         </div>
       </div>
 

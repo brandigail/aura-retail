@@ -1,19 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Heart, Menu, ShoppingCart, X } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { CartDrawer } from "@/features/cart/cart-drawer";
 import { useCart } from "@/features/cart/cart-provider";
 import { CurrencySwitcher } from "@/features/currency/currency-switcher";
 import { ThemeToggle } from "@/features/theme/theme-toggle";
+import { getWishlistServerSnapshot, getWishlistSnapshot, subscribeWishlist } from "@/features/wishlist/wishlist-store";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const ICON_BUTTON = `inline-flex size-10 items-center justify-center rounded-md border border-border transition-colors hover:bg-surface ${FOCUS}`;
 
 export function SiteHeader({ storeName }: { storeName: string }) {
   const { count, ready } = useCart();
+  const saved = useSyncExternalStore(subscribeWishlist, getWishlistSnapshot, getWishlistServerSnapshot).length;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -29,8 +31,17 @@ export function SiteHeader({ storeName }: { storeName: string }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/wishlist" aria-label="Wishlist" className={ICON_BUTTON}>
-            <Heart aria-hidden className="size-5" />
+          <Link
+            href="/wishlist"
+            aria-label={ready && saved > 0 ? `Wishlist, ${saved} saved` : "Wishlist"}
+            className={`relative ${ICON_BUTTON}`}
+          >
+            <Heart aria-hidden className={`size-5 ${ready && saved > 0 ? "fill-accent text-accent" : ""}`} />
+            {ready && saved > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs font-semibold text-accent-foreground">
+                {saved}
+              </span>
+            )}
           </Link>
           <button
             type="button"
