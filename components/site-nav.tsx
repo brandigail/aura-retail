@@ -8,7 +8,7 @@ export const NAV_LINKS = [
   { href: "/", label: "Shop" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-  { href: "/track", label: "Track order" },
+  { href: "/track", label: "Your orders" },
 ] as const;
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";

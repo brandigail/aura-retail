@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, useTransition, type FormEvent } from "react";
 import { useCart } from "@/features/cart/cart-provider";
+import { rememberOrder } from "@/features/orders/my-orders-store";
 import type { PaymentMethod } from "@/lib/demo-payment";
 import { formatMoney } from "@/lib/money";
 import type { ShippingMethod } from "@/lib/order-pricing";
@@ -49,6 +50,7 @@ export function CheckoutForm(props: CheckoutFormProps) {
 
   useEffect(() => {
     if (state.status !== "success" || !state.token) return;
+    rememberOrder(state.token);
     clearCart();
     router.push(`/orders/${state.token}`);
   }, [state, clearCart, router]);
