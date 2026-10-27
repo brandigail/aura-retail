@@ -17,7 +17,7 @@
 - [x] 15. Responsive pass at 375px, accessibility pass, empty and error states
 - [x] 16. `npm run build`, lint and `tsc --noEmit` clean; no console errors
 - [x] 17. README (pitch, features, stack, architecture, recruiter demo bullets, screenshots)
-- [ ] 18. Deploy to Netlify, set env vars, test live; push to GitHub; update root `LINKS.md` (WAITING: only on the owner's explicit go-ahead; nothing is pushed or deployed without asking first)
+- [x] 18. Deploy to Netlify, set env vars, test live; push to GitHub; update root `LINKS.md` (live at https://aura-retail-demo.netlify.app, 2026-10-27)
 
 ## Owner-ready phase (added: the store must be complete enough to hand to a real shop owner)
 
